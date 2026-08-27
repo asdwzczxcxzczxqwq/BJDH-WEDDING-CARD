@@ -379,8 +379,7 @@
   </div>
 
   <!-- (실제 오디오) -->
-  <audio id="bgm" src="audio/couple.mp3" preload="none" loop></audio>
-
+<audio id="bgm" src="audio/couple.mp3" preload="auto" autoplay loop></audio>
   <div class="wrap">
 
     <!-- HERO -->
@@ -672,7 +671,7 @@
       }
     })();
 
-    // ---------- Music (첫 터치 후 재생) ----------
+   // ---------- Music (자동 재생 시도 및 터치 보완) ----------
     const bgm = document.getElementById('bgm');
     const musicBtn = document.getElementById('musicBtn');
     const musicTip = document.getElementById('musicTip');
@@ -686,12 +685,12 @@
 
     async function tryPlay(){
       try{
-        bgm.preload = "auto";
         bgm.volume = 0.9;
         await bgm.play();
         setMusicUI(true);
-        musicTip.classList.remove('on');
-      }catch{
+        musicTip.classList.remove('on'); // 재생 성공 시 팁 숨김
+      }catch(err){
+        // 브라우저 정책에 의해 자동재생이 차단된 경우 팁 표시
         musicTip.classList.add('on');
         setMusicUI(false);
       }
@@ -707,11 +706,18 @@
       else await tryPlay();
     });
 
+    // 1차 시도: 페이지가 로드되자마자 즉시 재생 시도
+    window.addEventListener('DOMContentLoaded', tryPlay);
+
+    // 2차 시도: 자동재생이 브라우저에 막혔을 경우, 사용자가 화면을 터치할 때 재생
     const firstInteraction = async ()=>{
+      if(!musicOn) {
+        await tryPlay();
+      }
       document.removeEventListener('touchstart', firstInteraction);
       document.removeEventListener('click', firstInteraction);
-      await tryPlay();
     };
+    
     document.addEventListener('touchstart', firstInteraction, {passive:true});
     document.addEventListener('click', firstInteraction);
   </script>
