@@ -86,6 +86,7 @@
       position:absolute;inset:0;
       width:100%;height:100%;
       object-fit:cover;
+      object-position: center 20%; /* 얼굴 잘림 방지 */
       transform:scale(1.03);
       filter:saturate(1.03) contrast(1.05);
     }
@@ -269,7 +270,7 @@
     }
     .viewer img{
       width:100%;
-      height:430px;
+      aspect-ratio: 4 / 5; /* 모바일 청첩장에 최적화된 4:5 비율로 기기 호환 */
       object-fit:cover;
       display:block;
       cursor:pointer;
@@ -378,7 +379,7 @@
   </div>
 
   <!-- (실제 오디오) -->
-  <audio id="bgm" src="audio/bgm.mp3" preload="none" loop></audio>
+  <audio id="bgm" src="audio/couple.mp3" preload="none" loop></audio>
 
   <div class="wrap">
 
@@ -418,14 +419,33 @@
         </p>
       </div>
 
-      <div class="card info">
-        <div class="row">
-          <div class="label">신랑</div>
-          <div class="value"><strong>김병준</strong> · 아버지 김우정 · 어머니 이경숙</div>
-        </div>
-        <div class="row">
-          <div class="label">신부</div>
-          <div class="value"><strong>공단희</strong> · 아버지 공성대 · 어머니 김희주</div>
+      <div class="card info" style="padding: 30px 10px;">
+        <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 15px;">
+          
+          <!-- 신랑 측 -->
+          <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+            <div style="display: flex; flex-direction: column; font-size: 14px; line-height: 1.6; text-align: center;">
+              <span>김우정</span>
+              <span>이경숙</span>
+            </div>
+            <div style="font-size: 14px; text-align: left;">
+              <span style="font-size: 11px; color: var(--muted); margin-right: 4px;">의 아들</span>
+              <strong style="font-size: 15px;">병준</strong>
+            </div>
+          </div>
+
+          <!-- 신부 측 -->
+          <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+            <div style="display: flex; flex-direction: column; font-size: 14px; line-height: 1.6; text-align: center;">
+              <span>공성대</span>
+              <span>김희주</span>
+            </div>
+            <div style="font-size: 14px; text-align: left;">
+              <span style="font-size: 11px; color: var(--muted); margin-right: 4px;">의 딸</span>
+              <strong style="font-size: 15px;">단희</strong>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -467,7 +487,7 @@
           <div class="label">주소</div>
           <div class="value">
             <div class="addr-row">
-              <div class="addr-box" id="addrBox">부산 기장군 기장읍 기장해안로 98 디 111호</div>
+              <div class="addr-box" id="addrBox">부산 기장군 기장읍 기장해안로 98 디 101호</div>
               <button class="copy-mini" type="button" id="copyAddrMini">복사</button>
             </div>
 
