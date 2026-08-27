@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+
+  <!-- OG: 배포 후 YOUR_DOMAIN 교체 -->
+  <meta property="og:url" content="YOUR_DOMAIN/" />
+  <meta property="og:title" content="김병준 ♥ 공단희 결혼합니다" />
+  <meta property="og:description" content="2026년 11월 07일 (토) 오후 2시 · 파티 더 풀문" />
+  <meta property="og:image" content="YOUR_DOMAIN/images/og.jpg" />
+  <meta property="og:type" content="website" />
+
+  <title>김병준 ♥ 공단희 | 모바일 청첩장</title>
+
+  <!-- ✅ 로딩 최적화: 메인 이미지/폰트 preload -->
+  <link rel="preload" as="image" href="images/main.jpg" fetchpriority="high">
+<link rel="preload" href="fonts/font1.ttf" as="font" type="font/truetype" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#f7f6f4;
+      --card:#ffffff;
+      --ink:#111;
+      --muted:#6c6c6c;
+      --line:rgba(0,0,0,.08);
+      --shadow:0 12px 40px rgba(0,0,0,.06);
+      --radius:18px;
+      --max:760px;
+      --pad:18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"Noto Serif KR","Nanum Myeongjo",serif;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .wrap{max-width:var(--max);margin:0 auto;padding:18px var(--pad) 90px}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      content-visibility:auto;
+      contain-intrinsic-size: 1px 800px;
+    }
+    .section{margin:16px 0 28px}
+    .sec-head{text-align:center;margin:0 0 14px;padding:0 6px}
+    .kicker{font-size:12px;letter-spacing:.20em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+    .h2{font-size:20px;margin:0;font-weight:800}
+    .p{margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.7}
+
+    /* ✅ Custom Font (Netlify /fonts/font1.ttf) */
+    @font-face{
+      font-family:"WeddingFont";
+      src:url("fonts/font1.ttf") format("truetype");
+      font-weight:normal;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    /* ===== HERO ===== */
+    .hero{padding:0}
+    .hero-slide{
+      position:relative;
+      width:100%;
+      min-height:calc(100svh - 44px);
+      overflow:hidden;
+      background:#111;
+    }
+    .hero-slide img{
+      position:absolute;inset:0;
+      width:100%;height:100%;
+      object-fit:cover;
+      transform:scale(1.03);
+      filter:saturate(1.03) contrast(1.05);
+    }
+    .hero-overlay{
+      position:absolute;inset:0;
+      background:
+        radial-gradient(1100px 700px at 50% 25%, rgba(0,0,0,.10), transparent 55%),
+        linear-gradient(to bottom, rgba(0,0,0,.08), rgba(0,0,0,.66));
+    }
+    .hero-center{
+      position:relative;z-index:2;
+      height:100%;
+      min-height:inherit;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-end;
+      text-align:center;
+      padding:26px 18px 20px;
+      color:#fff;
+    }
+
+    /* ✅ 타이핑: 고정 자리 유지 + clip-path 방식 (자리 이동 없음) */
+    .wm{
+      position:absolute;
+      top: 15%; /* 상단으로 올리기 위해 top 위치 변경 (기존 50% -> 15%) */
+      left:50%;
+      transform:translate(-50%, -50%); /* Y축 중앙 정렬 유지를 위해 transform은 그대로 둠 */
+      font-family:"WeddingFont", serif;
+      font-size:60px;
+      letter-spacing:0.05em;
+      line-height:1.2;
+      color:#7fd3ff;
+      text-shadow:0 10px 30px rgba(0,0,0,.6);
+      z-index:3;
+      width:min(92vw, 520px);        /* ✅ 고정 폭 */
+      text-align:center;
+      will-change:clip-path;
+    }
+    .wm .type{
+      display:block;
+      white-space:pre-line;
+      clip-path: inset(0 100% 0 0);
+      /* 애니메이션은 폰트 로드 후 JS가 붙여줌 */
+    }
+    @keyframes typing{
+      from{ clip-path: inset(0 100% 0 0); }
+      to{   clip-path: inset(0 0 0 0); }
+    }
+
+    .hero-names{
+      font-family:"Nanum Myeongjo",serif;
+      font-size:34px;
+      font-weight:800;
+      letter-spacing:.05em;
+      margin:0;
+      opacity:0;
+      transform:translateY(12px);
+      animation: fadeUp 1.0s ease forwards 1.05s;
+      text-shadow:0 18px 60px rgba(0,0,0,.45);
+    }
+    .hero-date,.hero-venue{
+      opacity:0;
+      transform:translateY(12px);
+      animation: fadeUp 1.0s ease forwards 1.20s;
+    }
+    .hero-date{margin-top:10px;font-size:15px;letter-spacing:.12em}
+    .hero-venue{margin-top:6px;font-size:15px;opacity:.95}
+
+    .hero-actions{
+      display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
+      margin-top:16px;
+      opacity:0;
+      transform:translateY(12px);
+      animation: fadeUp 1.0s ease forwards 1.35s;
+    }
+
+    .btn{
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(255,255,255,.92);
+      color:#111;
+      padding:12px 14px;
+      border-radius:14px;
+      font-size:14px;
+      line-height:1;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn.primary{
+      background:#111;color:#fff;border-color:rgba(255,255,255,.18);
+    }
+    .btn.small{padding:10px 12px;font-size:13px;border-radius:12px}
+
+    @keyframes fadeUp{
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .scroll-hint{
+      margin-top:14px;
+      font-size:12px;
+      letter-spacing:.18em;
+      opacity:.90;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:6px;
+      color:#fff;
+      text-decoration:none;
+    }
+    .chev{
+      width:22px;height:22px;
+      border-right:2px solid rgba(255,255,255,.65);
+      border-bottom:2px solid rgba(255,255,255,.65);
+      transform:rotate(45deg);
+      animation: float 1.6s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%,100%{transform:rotate(45deg) translateY(0)}
+      50%{transform:rotate(45deg) translateY(6px)}
+    }
+
+    /* ===== Music UI ===== */
+    .music{
+      position:fixed;
+      top:14px;
+      right:14px;
+      z-index:9999;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .music-btn{
+      width:46px;height:46px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.28);
+      background:rgba(0,0,0,.28);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;
+      box-shadow:0 14px 40px rgba(0,0,0,.25);
+    }
+    .music-tip{
+      max-width:210px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(0,0,0,.28);
+      color:#fff;
+      font-size:12px;
+      line-height:1.5;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display:none;
+    }
+    .music-tip.on{display:block}
+
+    /* ===== Info blocks ===== */
+    .info{padding:16px}
+    .row{
+      display:flex;gap:10px;align-items:flex-start;justify-content:space-between;
+      padding:12px 0;border-top:1px solid var(--line)
+    }
+    .row:first-child{border-top:none;padding-top:0}
+    .label{font-size:13px;color:var(--muted);min-width:96px;text-align:left}
+    .value{flex:1;font-size:14px;line-height:1.65;text-align:left}
+
+    /* ===== Scroll reveal ===== */
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease, transform .7s ease}
+    .reveal.on{opacity:1;transform:translateY(0)}
+
+    /* ===== Gallery slider ===== */
+    .gallery{padding:14px}
+    .viewer{
+      position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);
+      background:#eee;
+    }
+    .viewer img{
+      width:100%;
+      height:430px;
+      object-fit:cover;
+      display:block;
+      cursor:pointer;
+    }
+    .count{
+      position:absolute;top:12px;right:12px;
+      background:rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900;
+    }
+    .navbtn{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:44px;height:44px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.55);
+      background:rgba(0,0,0,.30);color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-size:22px;cursor:pointer;user-select:none;
+    }
+    .prev{left:12px} .next{right:12px}
+    .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+    .thumb{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#eee;cursor:pointer}
+    .thumb img{width:100%;height:110px;object-fit:cover;opacity:.90}
+    .thumb.on{border-color:#111}
+    .thumb.on img{opacity:1}
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed;inset:0;background:rgba(0,0,0,.86);
+      display:none;align-items:center;justify-content:center;z-index:9999;padding:18px;
+    }
+    .lightbox.on{display:flex}
+    .lb-inner{width:100%;max-width:900px;position:relative}
+    .lb-img{width:100%;max-height:86vh;object-fit:contain;display:block;border-radius:14px;background:#000}
+    .lb-close{
+      position:absolute;top:-10px;right:-10px;width:42px;height:42px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(255,255,255,.12);color:#fff;font-size:18px;
+      display:flex;align-items:center;justify-content:center;cursor:pointer;
+    }
+
+    /* Location UI */
+    .map{
+      position:relative;
+      display:block;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#eee;
+    }
+    .map img{width:100%;height:260px;object-fit:cover;display:block}
+    .map-badge{
+      position:absolute;right:12px;top:12px;
+      padding:8px 10px;border-radius:999px;
+      background:rgba(255,255,255,.92);
+      border:1px solid var(--line);
+      font-size:12px;font-weight:900;letter-spacing:.10em;
+    }
+    .addr-row{display:flex;gap:8px;align-items:stretch;margin-top:10px}
+    .addr-box{
+      flex:1;border:1px solid var(--line);border-radius:14px;
+      padding:12px;background:rgba(0,0,0,.02);
+      font-size:14px;line-height:1.5;word-break:break-all;
+    }
+    .copy-mini{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:12px 14px;
+      font-size:13px;
+      white-space:nowrap;
+      cursor:pointer;
+    }
+    .nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+    .navbtn2{
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      padding:14px 10px;border-radius:16px;border:1px solid var(--line);
+      background:#fff;font-size:14px;
+    }
+    .ico{
+      width:28px;height:28px;border-radius:10px;border:1px solid var(--line);
+      display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;
+    }
+    .ico.naver{background:rgba(3,199,90,.12)}
+    .ico.kakao{background:rgba(255,226,0,.18)}
+    .ico.tmap{background:rgba(0,0,0,.06)}
+
+    /* Toast */
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      background:rgba(17,17,17,.92);color:#fff;padding:12px 14px;border-radius:999px;
+      font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease;
+      z-index:9999;
+    }
+    .toast.on{opacity:1;transform:translateX(-50%) translateY(-6px)}
+
+    footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0 0;line-height:1.6}
+  </style>
+</head>
+
+<body>
+
+  <!-- Music -->
+  <div class="music">
+    <div class="music-tip" id="musicTip">음악 재생은 ‘한 번 터치’가 필요할 수 있어요.</div>
+    <button class="music-btn" id="musicBtn" aria-label="배경음악 재생/정지">♫</button>
+  </div>
+
+  <!-- (실제 오디오) -->
+  <audio id="bgm" src="audio/bgm.mp3" preload="none" loop></audio>
+
+  <div class="wrap">
+
+    <!-- HERO -->
+    <section class="section card hero" id="top">
+      <div class="hero-slide">
+        <img src="images/main.jpg" alt="메인 사진" fetchpriority="high">
+        <div class="hero-overlay"></div>
+
+        <!-- 타이핑 문구 -->
+        <div class="wm">
+          <span class="type"></span>
+        </div>
+
+        <div class="hero-center">
+          <h1 class="hero-names">김병준 <span style="opacity:.75">♥</span> 공단희</h1>
+          <div class="hero-date">2026.11.07 (SAT) · 2:00 PM</div>
+          <div class="hero-venue">파티 더 풀문</div>
+
+          <a class="scroll-hint" href="#invitation" aria-label="아래로 스크롤">
+            <span>SCROLL</span>
+            <span class="chev"></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- INVITATION -->
+    <section class="section reveal" id="invitation">
+      <div class="sec-head">
+        <div class="kicker">Invitation</div>
+        <h2 class="h2">초대합니다</h2>
+        <p class="p">
+          서로의 하루가 되어 걸어온 두 사람이<br/>
+          이제 같은 길을 함께 걷고자 합니다.<br/>
+          소중한 날, 귀한 걸음으로 축복해 주세요.
+        </p>
+      </div>
+
+      <div class="card info">
+        <div class="row">
+          <div class="label">신랑</div>
+          <div class="value"><strong>김병준</strong> · 아버지 김우정 · 어머니 이경숙</div>
+        </div>
+        <div class="row">
+          <div class="label">신부</div>
+          <div class="value"><strong>공단희</strong> · 아버지 공성대 · 어머니 김희주</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="section reveal" id="gallery">
+      <div class="sec-head">
+        <div class="kicker">Gallery</div>
+        <h2 class="h2">사진</h2>
+        <p class="p">자동 슬라이드 + 스와이프 + 확대 보기</p>
+      </div>
+
+      <div class="card gallery">
+        <div class="viewer" id="viewer">
+          <img id="mainImg" src="images/g1.jpg" alt="갤러리 사진" loading="lazy" decoding="async">
+          <div class="count" id="count">1 / 6</div>
+          <div class="navbtn prev" id="prevBtn">‹</div>
+          <div class="navbtn next" id="nextBtn">›</div>
+        </div>
+
+        <div class="thumbs" id="thumbs"></div>
+      </div>
+    </section>
+
+    <!-- LOCATION -->
+    <section class="section reveal" id="location">
+      <div class="sec-head">
+        <div class="kicker">Location</div>
+        <h2 class="h2">오시는 길</h2>
+      </div>
+
+      <div class="card info">
+        <a class="map" href="https://map.naver.com/v5/search/파티 더 풀문" target="_blank" rel="noopener">
+          <img src="images/map.png" alt="지도" loading="lazy" decoding="async">
+          <div class="map-badge">NAVER MAP</div>
+        </a>
+
+        <div class="row" style="border-top:none;padding-top:14px">
+          <div class="label">주소</div>
+          <div class="value">
+            <div class="addr-row">
+              <div class="addr-box" id="addrBox">부산 기장군 기장읍 기장해안로 98 디 111호</div>
+              <button class="copy-mini" type="button" id="copyAddrMini">복사</button>
+            </div>
+
+            <div class="nav-grid">
+              <a class="navbtn2" href="https://map.naver.com/v5/search/파티 더 풀문" target="_blank" rel="noopener">
+                <span class="ico naver">N</span><span>네이버</span>
+              </a>
+              <a class="navbtn2" href="https://map.kakao.com/link/search/파티 더 풀문" target="_blank" rel="noopener">
+                <span class="ico kakao">K</span><span>카카오</span>
+              </a>
+              <a class="navbtn2" href="https://tmap.life/search?name=파티 더 풀문" target="_blank" rel="noopener">
+                <span class="ico tmap">T</span><span>티맵</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP -->
+    <section class="section reveal" id="rsvp">
+      <div class="sec-head">
+        <div class="kicker">RSVP</div>
+        <h2 class="h2">참석 응답</h2>
+        <p class="p">참석 / 전세버스 / 식사 여부</p>
+      </div>
+
+      <div class="card info">
+        <div class="row" style="border-top:none;padding-top:0">
+          <div class="label">응답</div>
+          <div class="value">로그인 없이 응답 가능하도록 별도 페이지로 구성</div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px">
+          <a class="btn primary" href="rsvp.html">응답하러 가기</a>
+          <button class="btn" type="button" id="copyLinkBtn">링크 복사</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © Wedding Invitation<br/>
+      <a href="#top">맨 위로</a>
+    </footer>
+
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <div class="lb-inner">
+      <img class="lb-img" id="lbImg" src="" alt="확대보기">
+      <div class="lb-close" id="lbClose">×</div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">복사되었습니다</div>
+
+  <script>
+    // ---------- Toast + Clipboard ----------
+    const toast = document.getElementById('toast');
+    let toastTimer = null;
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add('on');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=>toast.classList.remove('on'), 1400);
+    }
+    async function copyToClipboard(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        showToast('복사되었습니다');
+      }catch{
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast('복사되었습니다');
+      }
+    }
+    document.getElementById('copyAddrMini')?.addEventListener('click', ()=>{
+      copyToClipboard(document.getElementById('addrBox').innerText.trim());
+    });
+    document.getElementById('copyLinkBtn')?.addEventListener('click', ()=>{
+      copyToClipboard(window.location.href);
+    });
+
+    // ---------- Scroll reveal ----------
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+    // ---------- Gallery (✅ 초기 1장만 로딩, 나머지는 필요할 때 프리로드) ----------
+    const images = [
+      "images/g1.jpg","images/g2.jpg","images/g3.jpg",
+      "images/g4.jpg","images/g5.jpg","images/g6.jpg",
+    ];
+    let idx = 0;
+    const mainImg = document.getElementById('mainImg');
+    const count = document.getElementById('count');
+    const thumbs = document.getElementById('thumbs');
+
+    function preloadImage(src){
+      const img = new Image();
+      img.decoding = "async";
+      img.loading = "lazy";
+      img.src = src;
+    }
+
+    function renderThumbs(){
+      thumbs.innerHTML = "";
+      images.forEach((src, i)=>{
+        const div = document.createElement('div');
+        div.className = "thumb" + (i === idx ? " on" : "");
+        div.innerHTML = `<img src="${src}" loading="lazy" decoding="async" alt="thumb ${i+1}">`;
+        div.addEventListener('click', ()=> setIndex(i, true));
+        thumbs.appendChild(div);
+      });
+    }
+
+    function setIndex(i, manual=false){
+      idx = (i + images.length) % images.length;
+      mainImg.src = images[idx];
+      count.textContent = `${idx+1} / ${images.length}`;
+      renderThumbs();
+
+      // 다음/이전 한 장씩만 프리로드 (네트워크 과부하 방지)
+      preloadImage(images[(idx+1) % images.length]);
+      preloadImage(images[(idx-1 + images.length) % images.length]);
+
+      if(manual) resetAuto();
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', ()=> setIndex(idx - 1, true));
+    document.getElementById('nextBtn').addEventListener('click', ()=> setIndex(idx + 1, true));
+
+    // Swipe
+    let startX = null;
+    const viewer = document.getElementById('viewer');
+    viewer.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; }, {passive:true});
+    viewer.addEventListener('touchend', (e)=>{
+      if(startX === null) return;
+      const endX = e.changedTouches[0].clientX;
+      const diff = endX - startX;
+      if(Math.abs(diff) > 40){
+        diff > 0 ? setIndex(idx - 1, true) : setIndex(idx + 1, true);
+      }
+      startX = null;
+    });
+
+    // Auto slide
+    let autoTimer = null;
+    function startAuto(){ autoTimer = setInterval(()=> setIndex(idx + 1), 3500); }
+    function stopAuto(){ if(autoTimer) clearInterval(autoTimer); autoTimer = null; }
+    function resetAuto(){ stopAuto(); startAuto(); }
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    function openLightbox(){ lbImg.src = images[idx]; lightbox.classList.add('on'); stopAuto(); }
+    function closeLightbox(){ lightbox.classList.remove('on'); lbImg.src = ""; startAuto(); }
+    mainImg.addEventListener('click', openLightbox);
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+
+    // Init gallery
+    setIndex(0);
+    startAuto();
+
+    // ---------- ✅ 폰트 로드 후 타이핑 시작 (둘 다 적용) ----------
+    (async ()=>{
+      try{
+        await document.fonts.load("1em WeddingFont");
+        await document.fonts.ready;
+      }catch(e){}
+
+      const t = document.querySelector(".wm .type");
+      if(t){
+        // 느린 타이핑
+        t.style.animation = "typing 4.8s steps(45,end) forwards";
+      }
+    })();
+
+    // ---------- Music (첫 터치 후 재생) ----------
+    const bgm = document.getElementById('bgm');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicTip = document.getElementById('musicTip');
+    let musicOn = false;
+
+    function setMusicUI(on){
+      musicOn = on;
+      musicBtn.textContent = on ? "❚❚" : "♫";
+      musicBtn.setAttribute("aria-label", on ? "배경음악 정지" : "배경음악 재생");
+    }
+
+    async function tryPlay(){
+      try{
+        bgm.preload = "auto";
+        bgm.volume = 0.9;
+        await bgm.play();
+        setMusicUI(true);
+        musicTip.classList.remove('on');
+      }catch{
+        musicTip.classList.add('on');
+        setMusicUI(false);
+      }
+    }
+
+    function pause(){
+      bgm.pause();
+      setMusicUI(false);
+    }
+
+    musicBtn.addEventListener('click', async ()=>{
+      if(musicOn) pause();
+      else await tryPlay();
+    });
+
+    const firstInteraction = async ()=>{
+      document.removeEventListener('touchstart', firstInteraction);
+      document.removeEventListener('click', firstInteraction);
+      await tryPlay();
+    };
+    document.addEventListener('touchstart', firstInteraction, {passive:true});
+    document.addEventListener('click', firstInteraction);
+  </script>
+</body>
+</html>

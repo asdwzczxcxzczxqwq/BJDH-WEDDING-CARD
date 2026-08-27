@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>오시는 길</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  background:#f7f6f4;
+  font-family:'Noto Serif KR', serif;
+  color:#222;
+}
+
+.wrap{
+  max-width:600px;
+  margin:auto;
+  padding:20px;
+}
+
+/* 상단 */
+.top{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.back{
+  display:inline-block;
+  margin-bottom:10px;
+  color:#666;
+  text-decoration:none;
+  font-size:14px;
+}
+
+.title{
+  font-size:22px;
+  font-weight:600;
+}
+
+/* 카드 */
+.card{
+  background:white;
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+/* 지도 */
+.map{
+  position:relative;
+  display:block;
+  text-decoration:none;
+  color:inherit;
+}
+
+.map img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  display:block;
+}
+
+.map.noimg{
+  height:240px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#eee;
+}
+
+.map-text{
+  position:absolute;
+  bottom:15px;
+  left:15px;
+  color:white;
+}
+
+.map-title{
+  font-size:18px;
+  font-weight:700;
+}
+
+.map-sub{
+  font-size:13px;
+}
+
+.badge{
+  position:absolute;
+  top:10px;
+  right:10px;
+  background:white;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:600;
+}
+
+/* 정보 */
+.info{
+  padding:18px;
+}
+
+.row{
+  margin-bottom:14px;
+}
+
+.label{
+  font-size:13px;
+  color:#888;
+  margin-bottom:6px;
+}
+
+/* 주소 + 버튼 한줄 */
+.addr-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.addr-box{
+  flex:1;
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:12px;
+  font-size:14px;
+  background:#fafafa;
+  word-break:break-all;
+}
+
+/* 복사 버튼 */
+.copy-btn{
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  background:white;
+  font-size:13px;
+  white-space:nowrap;
+}
+
+/* 내비 */
+.nav{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+
+.nav a{
+  flex:1;
+  text-align:center;
+  padding:14px;
+  border-radius:12px;
+  background:white;
+  border:1px solid #ddd;
+  text-decoration:none;
+  color:#333;
+  font-size:14px;
+}
+
+/* 안내 */
+.tip{
+  margin-top:14px;
+  font-size:13px;
+  color:#888;
+  text-align:center;
+}
+
+/* 토스트 */
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:black;
+  color:white;
+  padding:10px 15px;
+  border-radius:20px;
+  font-size:13px;
+  opacity:0;
+  transition:0.3s;
+}
+
+.toast.show{
+  opacity:1;
+}
+
+.footer{
+  text-align:center;
+  margin-top:20px;
+  font-size:12px;
+  color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+  <div class="top">
+    <a class="back" href="index.html">← 메인으로</a>
+    <div class="title">오시는 길</div>
+  </div>
+
+  <div class="card">
+
+    <!-- 지도 -->
+    <a class="map" href="https://map.naver.com/v5/search/부산 파티더풀문 웨딩홀" target="_blank">
+
+      <img src="images/map.png" onerror="this.parentElement.classList.add('noimg'); this.remove();">
+
+      <div class="map-text">
+        <div class="map-title">부산 파티더풀문 웨딩홀</div>
+        <div class="map-sub">네이버지도에서 보기</div>
+      </div>
+
+      <div class="badge">NAVER</div>
+
+    </a>
+
+    <div class="info">
+
+      <div class="row">
+        <div class="label">장소</div>
+        <!-- 장소 박스 -->
+        <div class="addr-box" id="addr">
+        부산 파티더풀문 웨딩홀
+      </div>
+
+      <div class="row">
+        <div class="label">주소</div>
+
+        <!-- 주소 + 복사 -->
+        <div class="addr-row">
+          <div class="addr-box" id="addr">
+            부산 기장군 기장읍 기장해안로 98 디 111호
+          </div>
+          <button class="copy-btn" onclick="copy()">복사</button>
+        </div>
+
+      </div>
+
+      <div class="nav">
+        <a href="https://map.naver.com/v5/search/부산 파티더풀문 웨딩홀" target="_blank">네이버</a>
+        <a href="https://map.kakao.com/link/search/부산 파티더풀문 웨딩홀" target="_blank">카카오</a>
+        <a href="https://tmap.life/search?name=부산 파티더풀문 웨딩홀" target="_blank">티맵</a>
+      </div>
+
+      <div class="tip">
+        지도 버튼을 누르면 앱으로 바로 연결됩니다
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+    모바일에서 지도 앱으로 연결됩니다
+  </div>
+
+</div>
+
+<div id="toast" class="toast">주소가 복사되었습니다</div>
+
+<script>
+function copy(){
+  const text = document.getElementById("addr").innerText;
+
+  navigator.clipboard.writeText(text);
+
+  const toast = document.getElementById("toast");
+  toast.classList.add("show");
+
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },1500);
+}
+</script>
+
+</body>
+</html>
