@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
 
-  <!-- OG: 배포 후 YOUR_DOMAIN 교체 -->
-  <meta property="og:url" content="YOUR_DOMAIN/" />
+  <!-- OG: 실제 도메인 및 메인 사진 적용 완료 -->
+  <meta property="og:url" content="https://bjdh-wedding-card.vercel.app/" />
   <meta property="og:title" content="김병준 ♥ 공단희 결혼합니다" />
   <meta property="og:description" content="2026년 11월 07일 (토) 오후 2시 · 파티 더 풀문" />
-  <meta property="og:image" content="YOUR_DOMAIN/images/og.jpg" />
+  <meta property="og:image" content="https://bjdh-wedding-card.vercel.app/images/main.jpg" />
   <meta property="og:type" content="website" />
 
   <title>김병준 ♥ 공단희 | 모바일 청첩장</title>
@@ -379,7 +379,8 @@
   </div>
 
   <!-- (실제 오디오) -->
-<audio id="bgm" src="audio/COUPLE.mp3" preload="auto" autoplay loop></audio>
+  <audio id="bgm" src="audio/couple.mp3" preload="auto" autoplay loop></audio>
+
   <div class="wrap">
 
     <!-- HERO -->
@@ -671,7 +672,7 @@
       }
     })();
 
-   // ---------- Music (자동 재생 시도 및 터치 보완) ----------
+    // ---------- Music (자동 재생 시도 및 터치 보완) ----------
     const bgm = document.getElementById('bgm');
     const musicBtn = document.getElementById('musicBtn');
     const musicTip = document.getElementById('musicTip');
