@@ -16,7 +16,7 @@
 
   <!-- ✅ 로딩 최적화: 메인 이미지/폰트 preload -->
   <link rel="preload" as="image" href="images/main.jpg" fetchpriority="high">
-<link rel="preload" href="fonts/font1.ttf" as="font" type="font/truetype" crossorigin>
+  <link rel="preload" href="fonts/font1.ttf" as="font" type="font/truetype" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
@@ -112,9 +112,9 @@
     /* ✅ 타이핑: 고정 자리 유지 + clip-path 방식 (자리 이동 없음) */
     .wm{
       position:absolute;
-      top: 15%; /* 상단으로 올리기 위해 top 위치 변경 (기존 50% -> 15%) */
+      top: 15%; 
       left:50%;
-      transform:translate(-50%, -50%); /* Y축 중앙 정렬 유지를 위해 transform은 그대로 둠 */
+      transform:translate(-50%, -50%); 
       font-family:"WeddingFont", serif;
       font-size:60px;
       letter-spacing:0.05em;
@@ -122,7 +122,7 @@
       color:#7fd3ff;
       text-shadow:0 10px 30px rgba(0,0,0,.6);
       z-index:3;
-      width:min(92vw, 520px);        /* ✅ 고정 폭 */
+      width:min(92vw, 520px);
       text-align:center;
       will-change:clip-path;
     }
@@ -130,7 +130,6 @@
       display:block;
       white-space:pre-line;
       clip-path: inset(0 100% 0 0);
-      /* 애니메이션은 폰트 로드 후 JS가 붙여줌 */
     }
     @keyframes typing{
       from{ clip-path: inset(0 100% 0 0); }
@@ -270,7 +269,7 @@
     }
     .viewer img{
       width:100%;
-      aspect-ratio: 4 / 5; /* 모바일 청첩장에 최적화된 4:5 비율로 기기 호환 */
+      aspect-ratio: 4 / 5;
       object-fit:cover;
       display:block;
       cursor:pointer;
@@ -367,6 +366,34 @@
     .toast.on{opacity:1;transform:translateX(-50%) translateY(-6px)}
 
     footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0 0;line-height:1.6}
+
+    /* ===== Account Modal UI ===== */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+      display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .modal-overlay.on { display: flex; opacity: 1; }
+    .modal-content {
+      background: #fff; width: 100%; max-width: 400px; border-radius: 16px; overflow: hidden;
+      transform: translateY(20px); transition: transform 0.3s ease;
+    }
+    .modal-overlay.on .modal-content { transform: translateY(0); }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 18px 20px; border-bottom: 1px solid var(--line); background: #f9f9f9;
+    }
+    .modal-header h3 { margin: 0; font-size: 16px; font-weight: 600; color:var(--ink); }
+    .modal-close { font-size: 24px; color: var(--muted); cursor: pointer; line-height: 1; }
+    .modal-body { padding: 10px 20px 20px; }
+    .account-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 0; border-bottom: 1px solid var(--line);
+    }
+    .account-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .acc-info { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+    .acc-bank { font-size: 14px; font-weight: 600; color: var(--ink); }
+    .acc-name { font-size: 13px; color: var(--muted); }
   </style>
 </head>
 
@@ -450,6 +477,24 @@
       </div>
     </section>
 
+    <!-- ACCOUNT (마음 전하실 곳) -->
+    <section class="section reveal" id="account">
+      <div class="sec-head">
+        <div class="kicker">For Your Heart</div>
+        <h2 class="h2">마음 전하실 곳</h2>
+      </div>
+      <div class="card info" style="display:flex; flex-direction:column; gap:10px; padding:20px;">
+        <button class="btn" type="button" onclick="openModal('groomModal')" style="width:100%; padding:14px; font-size:15px; justify-content:space-between; background:rgba(0,0,0,.02); border-color:var(--line);">
+          <span>신랑측 계좌번호 확인</span>
+          <span style="color:var(--muted)">›</span>
+        </button>
+        <button class="btn" type="button" onclick="openModal('brideModal')" style="width:100%; padding:14px; font-size:15px; justify-content:space-between; background:rgba(0,0,0,.02); border-color:var(--line);">
+          <span>신부측 계좌번호 확인</span>
+          <span style="color:var(--muted)">›</span>
+        </button>
+      </div>
+    </section>
+
     <!-- GALLERY -->
     <section class="section reveal" id="gallery">
       <div class="sec-head">
@@ -518,6 +563,55 @@
     <div class="lb-inner">
       <img class="lb-img" id="lbImg" src="" alt="확대보기">
       <div class="lb-close" id="lbClose">×</div>
+    </div>
+  </div>
+
+  <!-- ACCOUNT MODALS (신랑/신부 계좌 팝업) -->
+  <div class="modal-overlay" id="groomModal" onclick="closeModal(event, 'groomModal')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>신랑측 계좌번호</h3>
+        <span class="modal-close" onclick="closeModal(null, 'groomModal')">×</span>
+      </div>
+      <div class="modal-body">
+        <div class="account-item">
+          <div class="acc-info">
+            <div class="acc-bank">하나은행 82991056103307</div>
+            <div class="acc-name">예금주: 김병준 (신랑)</div>
+          </div>
+              </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="brideModal" onclick="closeModal(event, 'brideModal')">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>신부측 계좌번호</h3>
+        <span class="modal-close" onclick="closeModal(null, 'brideModal')">×</span>
+      </div>
+      <div class="modal-body">
+        <div class="account-item">
+          <div class="acc-info">
+            <div class="acc-bank">KB국민은행 667210194692</div>
+            <div class="acc-name">예금주: 공성대 (아버지)</div>
+          </div>
+          <button class="copy-mini" onclick="copyToClipboard('0000000000000')">복사</button>
+        </div>
+        <div class="account-item">
+          <div class="acc-info">
+            <div class="acc-bank">농협은행 3020427331151</div>
+            <div class="acc-name">예금주: 김희주 (어머니)</div>
+          </div>
+          <button class="copy-mini" onclick="copyToClipboard('0000000000000')">복사</button>
+        </div>
+        <div class="account-item">
+          <div class="acc-info">
+            <div class="acc-bank">농협은행 3021356565221/div>
+            <div class="acc-name">예금주: 공단희 (신부)</div>
+          </div>
+          <button class="copy-mini" onclick="copyToClipboard('0000000000000')">복사</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -700,6 +794,23 @@
     
     document.addEventListener('touchstart', firstInteraction, {passive:true});
     document.addEventListener('click', firstInteraction);
+
+    // ---------- Account Modal Logic ----------
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      modal.style.display = 'flex';
+      // 브라우저 렌더링 강제 업데이트 (부드러운 애니메이션을 위해)
+      void modal.offsetWidth;
+      modal.classList.add('on');
+    }
+
+    function closeModal(e, id) {
+      // 바깥 검은 배경 클릭 시 또는 닫기 버튼 클릭 시에만 닫힘
+      if (e && e.target !== e.currentTarget) return; 
+      const modal = document.getElementById(id);
+      modal.classList.remove('on');
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
   </script>
 </body>
 </html>
