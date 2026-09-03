@@ -348,10 +348,35 @@
     .modal-overlay.bottom-sheet .modal-header {
       position:sticky;top:0;background:#fff;z-index:10;
       display:flex;align-items:center;justify-content:center;
-      padding:18px;border-bottom:1px solid var(--line);
+      padding:16px 20px;border-bottom:1px solid var(--line);
     }
     .modal-overlay.bottom-sheet .modal-header h3 {margin:0;font-size:16px;font-weight:700}
     
+    /* RSVP 모달 닫기(X) 버튼 */
+    .modal-close-btn {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 24px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+    .modal-close-btn:active {
+      color: var(--ink);
+      background: rgba(0,0,0,.05);
+    }
+
     .form-body {padding:20px;text-align:left}
     .form-desc {text-align:center;font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px}
     .input-label {font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px}
@@ -402,7 +427,7 @@
       </div>
     </section>
 
-    <!-- PAGE 2: INVITATION (정렬 최적화 완료) -->
+    <!-- PAGE 2: INVITATION -->
     <section class="page-section" id="invitation">
       <div class="card">
         <div class="sec-head">
@@ -448,7 +473,7 @@
       </div>
     </section>
 
-    <!-- PAGE 3: GALLERY (비율 최적화 + 썸네일 미리보기) -->
+    <!-- PAGE 3: GALLERY -->
     <section class="page-section" id="gallery">
       <div class="card">
         <div class="sec-head">
@@ -531,11 +556,12 @@
     </div>
   </div>
 
-  <!-- RSVP MODAL -->
+  <!-- RSVP MODAL (닫기 X 버튼 추가 완료) -->
   <div class="modal-overlay bottom-sheet" id="rsvpFormModal">
     <div class="modal-content">
       <div class="modal-header">
         <h3>전세버스 탑승 여부</h3>
+        <button type="button" class="modal-close-btn" onclick="closeModal('rsvpFormModal')" aria-label="닫기">×</button>
       </div>
       
       <form id="rsvpForm" class="form-body" action="https://script.google.com/macros/s/AKfycbyi1hHjIyfVx_A0qrhv5NID0_3JSgKh6iBwnsCZNNE9E6KsZcunlaPfGCJa6zTxjFpP/exec" method="POST" onsubmit="submitRSVP(event)">
