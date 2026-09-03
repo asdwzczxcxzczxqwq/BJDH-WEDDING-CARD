@@ -182,37 +182,37 @@
       50%{transform:rotate(45deg) translateY(6px)}
     }
 
-    /* ===== Music UI (텍스트 형태 플로팅 버튼) ===== */
+    /* Music UI */
     .music{
       position:fixed;
       top:16px;
       right:16px;
       z-index:9990;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
     .music-btn{
-      height:36px;
-      padding: 0 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.32);
-      background:rgba(0,0,0,.45);
+      width:42px;height:42px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.28);
+      background:rgba(0,0,0,.35);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color:#fff;
-      font-size:12.5px;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap: 6px;
+      display:flex;align-items:center;justify-content:center;
       cursor:pointer;
-      user-select:none;
-      box-shadow: 0 4px 14px rgba(0,0,0,.15);
-      font-family: inherit;
     }
-    .music-btn:active{
-      transform: scale(0.96);
+    .music-tip{
+      max-width:200px;
+      padding:8px 12px;
+      border-radius:12px;
+      background:rgba(0,0,0,.6);
+      color:#fff;
+      font-size:12px;
+      backdrop-filter: blur(8px);
+      display:none;
     }
+    .music-tip.on{display:block}
 
     /* ===== GALLERY ===== */
     .viewer{
@@ -393,11 +393,12 @@
 
 <body>
 
-  <!-- BGM UI (재생 / 일시정지 버튼) -->
+  <!-- BGM Control -->
   <div class="music">
-    <button class="music-btn" id="musicBtn" aria-label="배경음악 제어">시작</button>
+    <div class="music-tip" id="musicTip">터치하면 음악이 재생돼요.</div>
+    <button class="music-btn" id="musicBtn" aria-label="배경음악 재생/정지">♫</button>
   </div>
-  <audio id="bgm" src="audio/couple.mp3" preload="auto" loop playsinline></audio>
+  <audio id="bgm" src="audio/couple.mp3" preload="auto" loop></audio>
 
   <!-- 풀스크롤 컨테이너 -->
   <main class="snap-container" id="snapContainer">
@@ -485,6 +486,7 @@
           <div class="navbtn next" id="nextBtn">›</div>
         </div>
 
+        <!-- 6개 썸네일 미리보기 -->
         <div class="thumbs" id="thumbs"></div>
       </div>
     </section>
@@ -627,7 +629,7 @@
       copyToClipboard(document.getElementById('addrBox').innerText.trim());
     });
 
-    // 갤러리 슬라이더
+    // 갤러리 슬라이더 및 썸네일 연동
     const images = [
       "images/g1.jpg","images/g2.jpg","images/g3.jpg",
       "images/g4.jpg","images/g5.jpg","images/g6.jpg",
@@ -671,7 +673,7 @@
       startX = null;
     });
 
-    // 라이트박스
+    // 라이트박스 (클릭 시 확대)
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
     mainImg.addEventListener('click', () => { lbImg.src = images[idx]; lightbox.classList.add('on'); });
@@ -690,53 +692,80 @@
       if(t) t.style.animation = "typing 4.8s steps(45,end) forwards";
     })();
 
-    // ===== 배경음악 (자연스러운 자동재생 시도 + 시작/일시정지 토글) =====
+    // ========== 배경음악 제어 ==========
     const bgm = document.getElementById('bgm');
     const musicBtn = document.getElementById('musicBtn');
-    let isPlaying = false;
+    const musicTip = document.getElementById('musicTip');
+    let musicOn = false;
 
-    function updateMusicBtn(playing){
-      isPlaying = playing;
-      musicBtn.innerHTML = playing ? "❚❚ 일시정지" : "▶ 시작";
+    function setMusicUI(on){
+      musicOn = on;
+      musicBtn.textContent = on ? "❚❚" : "♫";
+      if(on) musicTip.classList.remove('on');
     }
 
     async function playAudio(){
-      try {
+      try{
+        bgm.volume = 0.9;
         await bgm.play();
-        updateMusicBtn(true);
-      } catch(err) {
-        updateMusicBtn(false);
+        setMusicUI(true);
+        return true;
+      }catch(err){
+        setMusicUI(false);
+        return false;
       }
     }
 
     function pauseAudio(){
       bgm.pause();
-      updateMusicBtn(false);
+      setMusicUI(false);
     }
 
-    // 버튼 수동 클릭 시
+    // 우측 상단 전용 토글 버튼
     musicBtn.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      if(isPlaying) {
+      e.stopPropagation(); // 화면 전체 클릭 리스너로 전파 차단
+      if(musicOn) {
         pauseAudio();
       } else {
         playAudio();
       }
     });
 
-    // 화면 첫 터치/스크롤 시 자동 재생 (모바일 정책 통과 핵심)
-    const handleFirstTouch = async () => {
-      if(!isPlaying) {
-        await playAudio();
+    // 화면 어디든 최초 1회 터치/클릭 시 재생 시작
+    const handleFirstScreenTouch = async (e) => {
+      // 모달 내부 입력 중이거나 복사 버튼 등을 터치했을 때도 자연스럽게 재생 트리거
+      if(!musicOn) {
+        const played = await playAudio();
+        if(played) {
+          // 재생 성공 시 화면 전체 터치 리스너 해제 (이후는 상단 버튼으로만 제어)
+          window.removeEventListener('touchstart', handleFirstScreenTouch);
+          window.removeEventListener('click', handleFirstScreenTouch);
+        }
       }
-      ['touchstart', 'touchend', 'click', 'scroll'].forEach(evt => {
-        window.removeEventListener(evt, handleFirstTouch, { capture: true });
-        document.removeEventListener(evt, handleFirstTouch, { capture: true });
-      });
     };
 
-    ['touchstart', 'touchend', 'click'].forEach(evt => {
-      window.addEventListener(evt, handleFirstTouch, { capture: true, passive: true });
+    window.addEventListener('touchstart', handleFirstScreenTouch, { passive: true });
+    window.addEventListener('click', handleFirstScreenTouch);
+
+    // 자동재생 허용 브라우저를 위해 로드 시 시도
+    window.addEventListener('DOMContentLoaded', () => {
+      playAudio().then((success) => {
+        if(!success) {
+          musicTip.classList.add('on');
+        } else {
+          // 자동재생 성공 시 화면 터치 리스너 즉시 제거
+          window.removeEventListener('touchstart', handleFirstScreenTouch);
+          window.removeEventListener('click', handleFirstScreenTouch);
+        }
+      });
+
+      // 1.5초 후 RSVP 자동 팝업
+      if (!sessionStorage.getItem('rsvpPopped')) {
+        setTimeout(() => {
+          openModal('rsvpFormModal');
+          sessionStorage.setItem('rsvpPopped', 'true');
+        }, 1500);
+      }
     });
 
     // 모달 제어
@@ -754,19 +783,6 @@
       document.getElementById('snapContainer').style.overflowY = 'scroll';
       setTimeout(() => { modal.style.display = 'none'; }, 300);
     }
-
-    // 접속 1.5초 후 자동 팝업
-    window.addEventListener('DOMContentLoaded', () => {
-      // 페이지 로드 시 백그라운드에서 가능한 환경(PC 등)이면 우선 재생 시도
-      playAudio();
-
-      if (!sessionStorage.getItem('rsvpPopped')) {
-        setTimeout(() => {
-          openModal('rsvpFormModal');
-          sessionStorage.setItem('rsvpPopped', 'true');
-        }, 1500);
-      }
-    });
 
     // 라디오 버튼 선택
     document.querySelectorAll('.radio-btn input[type="radio"]').forEach(radio => {
