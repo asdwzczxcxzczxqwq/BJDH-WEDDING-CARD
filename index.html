@@ -18,7 +18,7 @@
   <link rel="preload" as="image" href="images/main.jpg" fetchpriority="high">
   <link rel="preload" href="fonts/font1.ttf" as="font" type="font/truetype" crossorigin>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600&family=Nanum+Myeongjo:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
@@ -29,42 +29,69 @@
       --muted:#6c6c6c;
       --line:rgba(0,0,0,.08);
       --shadow:0 12px 40px rgba(0,0,0,.06);
-      --radius:18px;
-      --max:760px;
-      --pad:18px;
+      --radius:22px;
+      --max:480px;
     }
 
     *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--ink);
-      font-family:"Noto Serif KR","Nanum Myeongjo",serif;
-      -webkit-font-smoothing:antialiased;
-      text-rendering:optimizeLegibility;
-      overflow-x:hidden;
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      height: 100svh;
+      overflow: hidden;
+      background: #1a1a1a;
+      font-family: "Noto Serif KR","Nanum Myeongjo",serif;
+      -webkit-font-smoothing: antialiased;
     }
+
+    .snap-container {
+      width: 100%;
+      max-width: var(--max);
+      height: 100%;
+      height: 100svh;
+      margin: 0 auto;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      background: var(--bg);
+      position: relative;
+    }
+
+    .snap-container::-webkit-scrollbar { display: none; }
+    .snap-container { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .page-section {
+      width: 100%;
+      height: 100%;
+      height: 100svh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 24px 20px;
+      position: relative;
+    }
+
     a{color:inherit;text-decoration:none}
     img{max-width:100%;display:block}
-    .wrap{max-width:var(--max);margin:0 auto;padding:18px var(--pad) 90px}
 
-    .card{
-      background:var(--card);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      content-visibility:auto;
-      contain-intrinsic-size: 1px 800px;
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 20px;
+      width: 100%;
     }
-    .section{margin:16px 0 28px}
-    .sec-head{text-align:center;margin:0 0 14px;padding:0 6px}
-    .kicker{font-size:12px;letter-spacing:.20em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
-    .h2{font-size:20px;margin:0;font-weight:800}
-    .p{margin:10px 0 0;color:var(--muted);font-size:14px;line-height:1.7}
 
-    /* ✅ Custom Font */
+    .sec-head{text-align:center;margin:0 0 16px;padding:0 6px}
+    .h2{font-size:21px;margin:0;font-weight:700;letter-spacing:-0.02em}
+    .p{margin:12px 0 0;color:var(--muted);font-size:14.5px;line-height:1.8}
+
     @font-face{
       font-family:"WeddingFont";
       src:url("fonts/font1.ttf") format("truetype");
@@ -73,58 +100,44 @@
       font-display:swap;
     }
 
-    /* ===== HERO ===== */
-    .hero{padding:0}
-    .hero-slide{
-      position:relative;
-      width:100%;
-      min-height:calc(100svh - 44px);
-      overflow:hidden;
-      background:#111;
-    }
+    /* HERO */
+    .hero-page { padding: 0; background: #111; overflow: hidden; }
+    .hero-slide { position: relative; width: 100%; height: 100%; }
     .hero-slide img{
       position:absolute;inset:0;
       width:100%;height:100%;
       object-fit:cover;
       object-position: center 20%;
-      transform:scale(1.03);
-      filter:saturate(1.03) contrast(1.05);
     }
     .hero-overlay{
       position:absolute;inset:0;
       background:
         radial-gradient(1100px 700px at 50% 25%, rgba(0,0,0,.10), transparent 55%),
-        linear-gradient(to bottom, rgba(0,0,0,.08), rgba(0,0,0,.66));
+        linear-gradient(to bottom, rgba(0,0,0,.12), rgba(0,0,0,.75));
     }
     .hero-center{
       position:relative;z-index:2;
       height:100%;
-      min-height:inherit;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:flex-end;
       text-align:center;
-      padding:26px 18px 20px;
+      padding: 30px 20px 40px;
       color:#fff;
     }
-
-    /* ✅ 타이핑 */
-    .wm{
+    .wm {
       position:absolute;
       top: 15%; 
       left:50%;
       transform:translate(-50%, -50%); 
       font-family:"WeddingFont", serif;
-      font-size:60px;
-      letter-spacing:0.05em;
-      line-height:1.2;
+      font-size:54px;
       color:#7fd3ff;
       text-shadow:0 10px 30px rgba(0,0,0,.6);
       z-index:3;
-      width:min(92vw, 520px);
+      width:min(90vw, 420px);
       text-align:center;
-      will-change:clip-path;
     }
     .wm .type{
       display:block;
@@ -135,74 +148,32 @@
       from{ clip-path: inset(0 100% 0 0); }
       to{   clip-path: inset(0 0 0 0); }
     }
-
     .hero-names{
       font-family:"Nanum Myeongjo",serif;
-      font-size:34px;
+      font-size:32px;
       font-weight:800;
       letter-spacing:.05em;
       margin:0;
-      opacity:0;
-      transform:translateY(12px);
-      animation: fadeUp 1.0s ease forwards 1.05s;
       text-shadow:0 18px 60px rgba(0,0,0,.45);
     }
-    .hero-date,.hero-venue{
-      opacity:0;
-      transform:translateY(12px);
-      animation: fadeUp 1.0s ease forwards 1.20s;
-    }
-    .hero-date{margin-top:10px;font-size:15px;letter-spacing:.12em}
-    .hero-venue{margin-top:6px;font-size:15px;opacity:.95}
-
-    .hero-actions{
-      display:flex;gap:10px;justify-content:center;flex-wrap:wrap;
-      margin-top:16px;
-      opacity:0;
-      transform:translateY(12px);
-      animation: fadeUp 1.0s ease forwards 1.35s;
-    }
-
-    .btn{
-      border:1px solid rgba(255,255,255,.22);
-      background:rgba(255,255,255,.92);
-      color:#111;
-      padding:12px 14px;
-      border-radius:14px;
-      font-size:14px;
-      line-height:1;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      cursor:pointer;
-      user-select:none;
-    }
-    .btn.primary{
-      background:#111;color:#fff;border-color:rgba(255,255,255,.18);
-    }
-    .btn.small{padding:10px 12px;font-size:13px;border-radius:12px}
-
-    @keyframes fadeUp{
-      to{opacity:1; transform:translateY(0)}
-    }
+    .hero-date{margin-top:10px;font-size:15px;letter-spacing:.10em}
+    .hero-venue{margin-top:6px;font-size:14px;opacity:.95}
 
     .scroll-hint{
-      margin-top:14px;
-      font-size:12px;
-      letter-spacing:.18em;
-      opacity:.90;
+      margin-top:18px;
+      font-size:11px;
+      letter-spacing:.2em;
+      opacity:.85;
       display:flex;
       flex-direction:column;
       align-items:center;
       gap:6px;
       color:#fff;
-      text-decoration:none;
     }
     .chev{
-      width:22px;height:22px;
-      border-right:2px solid rgba(255,255,255,.65);
-      border-bottom:2px solid rgba(255,255,255,.65);
+      width:18px;height:18px;
+      border-right:2px solid rgba(255,255,255,.75);
+      border-bottom:2px solid rgba(255,255,255,.75);
       transform:rotate(45deg);
       animation: float 1.6s ease-in-out infinite;
     }
@@ -211,267 +182,209 @@
       50%{transform:rotate(45deg) translateY(6px)}
     }
 
-    /* ===== Music UI ===== */
+    /* Music UI */
     .music{
       position:fixed;
-      top:14px;
-      right:14px;
+      top:16px;
+      right:16px;
       z-index:9990;
       display:flex;
       align-items:center;
       gap:10px;
     }
     .music-btn{
-      width:46px;height:46px;border-radius:999px;
+      width:42px;height:42px;border-radius:999px;
       border:1px solid rgba(255,255,255,.28);
-      background:rgba(0,0,0,.28);
+      background:rgba(0,0,0,.35);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color:#fff;
       display:flex;align-items:center;justify-content:center;
       cursor:pointer;
-      box-shadow:0 14px 40px rgba(0,0,0,.25);
     }
     .music-tip{
-      max-width:210px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.22);
-      background:rgba(0,0,0,.28);
+      max-width:200px;
+      padding:8px 12px;
+      border-radius:12px;
+      background:rgba(0,0,0,.6);
       color:#fff;
       font-size:12px;
-      line-height:1.5;
       backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
       display:none;
     }
     .music-tip.on{display:block}
 
-    /* ===== Info blocks ===== */
-    .info{padding:16px}
-    .row{
-      display:flex;gap:10px;align-items:flex-start;justify-content:space-between;
-      padding:12px 0;border-top:1px solid var(--line)
-    }
-    .row:first-child{border-top:none;padding-top:0}
-    .label{font-size:13px;color:var(--muted);min-width:96px;text-align:left}
-    .value{flex:1;font-size:14px;line-height:1.65;text-align:left}
-
-    /* ===== Scroll reveal ===== */
-    .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease, transform .7s ease}
-    .reveal.on{opacity:1;transform:translateY(0)}
-
-    /* ===== Gallery slider ===== */
-    .gallery{padding:14px}
+    /* ===== GALLERY ===== */
     .viewer{
-      position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);
-      background:#eee;
+      position:relative;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background:#f0f0f0;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      max-height: 48svh;
+      margin: 0 auto;
     }
     .viewer img{
       width:100%;
-      aspect-ratio: 4 / 5;
-      object-fit:cover;
+      height:100%;
+      object-fit: cover;
       display:block;
       cursor:pointer;
     }
     .count{
-      position:absolute;top:12px;right:12px;
-      background:rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      padding:6px 10px;border-radius:999px;font-size:12px;font-weight:900;
+      position:absolute;top:10px;right:10px;
+      background:rgba(0,0,0,.5);
+      color:#fff;
+      border:1px solid rgba(255,255,255,.2);
+      padding:4px 9px;border-radius:999px;font-size:11px;font-weight:700;
+      backdrop-filter: blur(4px);
     }
     .navbtn{
       position:absolute;top:50%;transform:translateY(-50%);
-      width:44px;height:44px;border-radius:999px;
+      width:38px;height:38px;border-radius:999px;
       border:1px solid rgba(255,255,255,.55);
       background:rgba(0,0,0,.30);color:#fff;
       display:flex;align-items:center;justify-content:center;
-      font-size:22px;cursor:pointer;user-select:none;
+      font-size:20px;cursor:pointer;user-select:none;
+      backdrop-filter: blur(4px);
     }
-    .prev{left:12px} .next{right:12px}
-    .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
-    .thumb{border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#eee;cursor:pointer}
-    .thumb img{width:100%;height:110px;object-fit:cover;opacity:.90}
-    .thumb.on{border-color:#111}
-    .thumb.on img{opacity:1}
+    .prev{left:10px} .next{right:10px}
 
-    /* Lightbox */
-    .lightbox{
-      position:fixed;inset:0;background:rgba(0,0,0,.86);
-      display:none;align-items:center;justify-content:center;z-index:9999;padding:18px;
+    .thumbs{
+      display:grid;
+      grid-template-columns:repeat(6, 1fr);
+      gap:6px;
+      margin-top:12px;
     }
-    .lightbox.on{display:flex}
-    .lb-inner{width:100%;max-width:900px;position:relative}
-    .lb-img{width:100%;max-height:86vh;object-fit:contain;display:block;border-radius:14px;background:#000}
-    .lb-close{
-      position:absolute;top:-10px;right:-10px;width:42px;height:42px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.35);
-      background:rgba(255,255,255,.12);color:#fff;font-size:18px;
-      display:flex;align-items:center;justify-content:center;cursor:pointer;
-    }
-
-    /* Location UI */
-    .map{
-      position:relative;
-      display:block;
-      border-radius:16px;
+    .thumb{
+      border-radius:8px;
       overflow:hidden;
-      border:1px solid var(--line);
+      border:1.5px solid transparent;
       background:#eee;
+      cursor:pointer;
+      aspect-ratio: 1 / 1;
+      transition: all 0.2s ease;
     }
-    .map img{width:100%;height:260px;object-fit:cover;display:block}
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:.55;
+      transition: opacity 0.2s ease;
+    }
+    .thumb.on{
+      border-color:var(--ink);
+      transform: translateY(-2px);
+    }
+    .thumb.on img{
+      opacity:1;
+    }
+
+    /* Map */
+    .map{
+      position:relative;display:block;border-radius:14px;overflow:hidden;
+      border:1px solid var(--line);background:#eee;
+    }
+    .map img{width:100%;height:180px;object-fit:cover;display:block}
     .map-badge{
-      position:absolute;right:12px;top:12px;
-      padding:8px 10px;border-radius:999px;
-      background:rgba(255,255,255,.92);
-      border:1px solid var(--line);
-      font-size:12px;font-weight:900;letter-spacing:.10em;
+      position:absolute;right:10px;top:10px;padding:6px 9px;border-radius:999px;
+      background:rgba(255,255,255,.95);border:1px solid var(--line);font-size:11px;font-weight:800;
     }
-    .addr-row{display:flex;gap:8px;align-items:stretch;margin-top:10px}
+    .addr-row{display:flex;gap:6px;align-items:stretch;margin-top:10px}
     .addr-box{
-      flex:1;border:1px solid var(--line);border-radius:14px;
-      padding:12px;background:rgba(0,0,0,.02);
-      font-size:14px;line-height:1.5;word-break:break-all;
+      flex:1;border:1px solid var(--line);border-radius:12px;
+      padding:10px 12px;background:rgba(0,0,0,.02);
+      font-size:13px;line-height:1.4;word-break:keep-all;
     }
     .copy-mini{
-      border:1px solid var(--line);
-      background:#fff;
-      border-radius:14px;
-      padding:12px 14px;
-      font-size:13px;
-      white-space:nowrap;
-      cursor:pointer;
+      border:1px solid var(--line);background:#fff;border-radius:12px;
+      padding:0 14px;font-size:13px;cursor:pointer;
     }
-    .nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+    .nav-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
     .navbtn2{
-      display:flex;align-items:center;justify-content:center;gap:10px;
-      padding:14px 10px;border-radius:16px;border:1px solid var(--line);
-      background:#fff;font-size:14px;
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      padding:10px 6px;border-radius:12px;border:1px solid var(--line);
+      background:#fff;font-size:13px;
     }
     .ico{
-      width:28px;height:28px;border-radius:10px;border:1px solid var(--line);
-      display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;
+      width:24px;height:24px;border-radius:8px;border:1px solid var(--line);
+      display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;
     }
     .ico.naver{background:rgba(3,199,90,.12)}
     .ico.kakao{background:rgba(255,226,0,.18)}
     .ico.tmap{background:rgba(0,0,0,.06)}
 
-    /* Toast */
-    .toast{
-      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
-      background:rgba(17,17,17,.92);color:#fff;padding:12px 14px;border-radius:999px;
-      font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s ease, transform .25s ease;
-      z-index:9999;
+    /* Button */
+    .btn{
+      background:#111;color:#fff;
+      padding:14px;border-radius:14px;font-size:14.5px;
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;border:none;width:100%;font-family:inherit;
     }
-    .toast.on{opacity:1;transform:translateX(-50%) translateY(-6px)}
 
-    footer{text-align:center;color:var(--muted);font-size:12px;padding:24px 0 0;line-height:1.6}
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:9999;padding:18px}
+    .lightbox.on{display:flex}
+    .lb-inner{width:100%;max-width:900px;position:relative}
+    .lb-img{width:100%;max-height:86vh;object-fit:contain;display:block;border-radius:14px;background:#000}
+    .lb-close{position:absolute;top:-10px;right:-10px;width:40px;height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer}
 
-    /* ===== Account Modal UI ===== */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-      display: none; align-items: center; justify-content: center; z-index: 9999; padding: 20px;
-      opacity: 0; transition: opacity 0.3s ease;
+    /* RSVP MODAL */
+    .modal-overlay.bottom-sheet {
+      position:fixed;inset:0;background:rgba(0,0,0,0.6);
+      display:none;align-items:flex-end;justify-content:center;
+      z-index:9999;opacity:0;transition:opacity 0.3s ease;
     }
-    .modal-overlay.on { display: flex; opacity: 1; }
-    .modal-content {
-      background: #fff; width: 100%; max-width: 400px; border-radius: 16px; overflow: hidden;
-      transform: translateY(20px); transition: transform 0.3s ease;
-    }
-    .modal-overlay.on .modal-content { transform: translateY(0); }
-    .modal-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 18px 20px; border-bottom: 1px solid var(--line); background: #f9f9f9;
-    }
-    .modal-header h3 { margin: 0; font-size: 16px; font-weight: 600; color:var(--ink); }
-    .modal-close { font-size: 24px; color: var(--muted); cursor: pointer; line-height: 1; }
-    .modal-body { padding: 10px 20px 20px; }
-    .account-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 16px 0; border-bottom: 1px solid var(--line);
-    }
-    .account-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .acc-info { display: flex; flex-direction: column; gap: 4px; text-align: left; }
-    .acc-bank { font-size: 14px; font-weight: 600; color: var(--ink); }
-    .acc-name { font-size: 13px; color: var(--muted); }
-
-    /* ===== RSVP Form Modal UI ===== */
-    .modal-overlay.bottom-sheet { align-items: flex-end; padding: 0; }
+    .modal-overlay.bottom-sheet.on {display:flex;opacity:1}
     .modal-overlay.bottom-sheet .modal-content {
-      max-width: 500px; max-height: 90vh; border-radius: 20px 20px 0 0; 
-      overflow-y: auto; display: flex; flex-direction: column;
-      transform: translateY(100%);
+      background:#fff;width:100%;max-width:480px;max-height:90vh;
+      border-radius:20px 20px 0 0;overflow-y:auto;
+      transform:translateY(100%);transition:transform 0.3s ease;
+      padding-bottom:24px;
     }
-    .modal-overlay.bottom-sheet.on .modal-content { transform: translateY(0); }
+    .modal-overlay.bottom-sheet.on .modal-content {transform:translateY(0)}
     .modal-overlay.bottom-sheet .modal-header {
-      position: sticky; top: 0; background: #fff; z-index: 10;
+      position:sticky;top:0;background:#fff;z-index:10;
+      display:flex;align-items:center;justify-content:center;
+      padding:18px;border-bottom:1px solid var(--line);
     }
-    .modal-overlay.bottom-sheet .modal-header h3 { flex:1; text-align:center; }
-    .modal-overlay.bottom-sheet .modal-close { position:absolute; right:20px; }
+    .modal-overlay.bottom-sheet .modal-header h3 {margin:0;font-size:16px;font-weight:700}
     
-    .form-body { padding: 20px; text-align: left; }
-    .form-desc { text-align:center; font-size:13px; color:var(--muted); line-height:1.6; margin-bottom:24px; }
-    
-    .input-label { font-size:12px; font-weight:700; color:var(--ink); margin-bottom:8px; }
-    .input-text { width:100%; border:none; border-bottom:1px solid var(--line); padding:10px 0; font-size:15px; outline:none; background:transparent; font-family:inherit; color:var(--ink); }
-    .input-text::placeholder { color:#ccc; }
-    .input-text:focus { border-bottom-color: var(--ink); }
+    .form-body {padding:20px;text-align:left}
+    .form-desc {text-align:center;font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+    .input-label {font-size:12px;font-weight:700;color:var(--ink);margin-bottom:6px}
+    .input-text {width:100%;border:none;border-bottom:1px solid var(--line);padding:10px 0;font-size:14px;outline:none;background:transparent;font-family:inherit}
+    .radio-group {display:flex;gap:10px;margin:8px 0 20px}
+    .radio-btn {flex:1;text-align:center;padding:12px 0;border:1px solid var(--line);background:#f9f9f9;border-radius:10px;font-size:13px;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:6px}
+    .radio-btn input {display:none}
+    .radio-btn.active {border-color:var(--ink);background:#fff;font-weight:700}
+    .radio-btn.active::after {content:'';width:12px;height:12px;background:var(--ink);border-radius:50%;display:inline-block}
 
-    .radio-group { display:flex; gap:10px; margin-bottom:24px; }
-    .radio-btn {
-      flex:1; text-align:center; padding:14px 0; border:1px solid var(--line); background:#f9f9f9;
-      border-radius:12px; font-size:14px; color:var(--muted); cursor:pointer;
-      transition:all 0.2s; position:relative; display:flex; justify-content:center; align-items:center; gap:6px;
-    }
-    .radio-btn input { display:none; }
-    .radio-btn.active { border-color:var(--ink); background:#fff; color:var(--ink); font-weight:700; }
-    
-    /* 체크 아이콘 */
-    .radio-btn.active::after {
-      content: ''; width: 14px; height: 14px; background: var(--ink); border-radius: 50%;
-      display: inline-block; position: relative;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
-      background-size: 8px; background-repeat: no-repeat; background-position: center;
-    }
-    .radio-btn:not(.active):after {
-      content: ''; width: 12px; height: 12px; border: 1px solid #ccc; border-radius: 50%; display: inline-block;
-    }
-
-    .radio-inline { display:flex; gap:14px; font-size:14px; color:var(--ink); align-items:center; }
-    .radio-inline label { display:flex; align-items:center; gap:6px; cursor:pointer; }
-    .radio-inline input[type="radio"] { accent-color: var(--ink); width:16px; height:16px; margin:0; }
-
-    .counter { display:flex; align-items:center; gap:16px; }
-    .counter button { width:32px; height:32px; border-radius:50%; border:1px solid var(--line); background:#f9f9f9; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--muted); }
-    .counter span { font-size:16px; font-weight:600; min-width:14px; text-align:center; color:var(--ink); }
-
-    .consent-box { margin-top:30px; padding:16px; border:1px solid var(--line); border-radius:12px; background:#fafafa; display:flex; gap:10px; align-items:flex-start; }
-    .consent-box input[type="checkbox"] { width:18px; height:18px; accent-color:var(--ink); margin-top:2px; cursor:pointer; }
-    .consent-text { font-size:14px; color:var(--ink); line-height:1.5; }
-    .consent-text small { display:block; color:var(--muted); font-size:12px; margin-top:4px; line-height:1.4; }
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(17,17,17,.92);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:9999}
+    .toast.on{opacity:1}
   </style>
 </head>
 
 <body>
 
-  <!-- Music -->
+  <!-- BGM Control -->
   <div class="music">
-    <div class="music-tip" id="musicTip">음악 재생은 ‘한 번 터치’가 필요할 수 있어요.</div>
+    <div class="music-tip" id="musicTip">음악 재생은 터치가 필요해요.</div>
     <button class="music-btn" id="musicBtn" aria-label="배경음악 재생/정지">♫</button>
   </div>
+  <audio id="bgm" src="audio/couple.mp3" preload="auto" loop></audio>
 
-  <!-- (실제 오디오) -->
-  <audio id="bgm" src="audio/couple.mp3" preload="auto" autoplay loop></audio>
+  <!-- 풀스크롤 컨테이너 -->
+  <main class="snap-container" id="snapContainer">
 
-  <div class="wrap">
-
-    <!-- HERO -->
-    <section class="section card hero" id="top">
+    <!-- PAGE 1: HERO -->
+    <section class="page-section hero-page" id="top">
       <div class="hero-slide">
         <img src="images/main.jpg" alt="메인 사진" fetchpriority="high">
         <div class="hero-overlay"></div>
 
-        <!-- 타이핑 문구 -->
         <div class="wm">
           <span class="type"></span>
         </div>
@@ -481,155 +394,134 @@
           <div class="hero-date">2026.11.07 (SAT) · 2:00 PM</div>
           <div class="hero-venue">파티 더 풀문</div>
 
-          <a class="scroll-hint" href="#invitation" aria-label="아래로 스크롤">
+          <div class="scroll-hint">
             <span>SCROLL</span>
             <span class="chev"></span>
-          </a>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- INVITATION -->
-    <section class="section reveal" id="invitation">
-      <div class="sec-head">
-        <div class="kicker">Invitation</div>
-        <h2 class="h2">초대합니다</h2>
-        <p class="p">
-          서로의 하루가 되어 걸어온 두 사람이<br/>
-          이제 같은 길을 함께 걷고자 합니다.<br/>
-          소중한 날, 귀한 걸음으로 축복해 주세요.
-        </p>
-      </div>
+    <!-- PAGE 2: INVITATION (정렬 최적화 완료) -->
+    <section class="page-section" id="invitation">
+      <div class="card">
+        <div class="sec-head">
+          <h2 class="h2">초대합니다</h2>
+          <p class="p">
+            서로의 하루가 되어 걸어온 두 사람이<br/>
+            이제 같은 길을 함께 걷고자 합니다.<br/>
+            소중한 날, 귀한 걸음으로 축복해 주세요.
+          </p>
+        </div>
 
-      <div class="card info" style="padding: 30px 10px;">
-        <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 15px;">
-          
-          <!-- 신랑 측 -->
-          <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
-            <div style="display: flex; flex-direction: column; font-size: 20px; line-height: 1.6; text-align: center;">
-              <span>김우정</span>
-              <span>이경숙</span>
+        <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 14px; align-items: center;">
+          <div style="display: flex; flex-direction: column; gap: 14px; width: fit-content;">
+            
+            <!-- 신랑 측 -->
+            <div style="display: flex; align-items: baseline;">
+              <div style="width: 126px; text-align: right; font-size: 15px; color: var(--ink); letter-spacing: 0.02em;">
+                김우정 · 이경숙
+              </div>
+              <div style="width: 58px; text-align: center; font-size: 13px; color: var(--muted);">
+                의 아들
+              </div>
+              <div style="width: 48px; text-align: left; font-size: 18px; font-weight: 700; color: var(--ink);">
+                병준
+              </div>
             </div>
-            <div style="font-size: 20px; text-align: left;">
-              <span style="font-size: 14px; color: var(--muted); margin-right: 4px;">의 아들</span>
-              <strong style="font-size: 20px;">병준</strong>
+
+            <!-- 신부 측 -->
+            <div style="display: flex; align-items: baseline;">
+              <div style="width: 126px; text-align: right; font-size: 15px; color: var(--ink); letter-spacing: 0.02em;">
+                공성대 · 김희주
+              </div>
+              <div style="width: 58px; text-align: center; font-size: 13px; color: var(--muted);">
+                의 딸
+              </div>
+              <div style="width: 48px; text-align: left; font-size: 18px; font-weight: 700; color: var(--ink);">
+                단희
+              </div>
             </div>
+
           </div>
-
-          <!-- 신부 측 -->
-          <div style="display: flex; align-items: center; gap: 8px; white-space: nowrap;">
-            <div style="display: flex; flex-direction: column; font-size: 20px; line-height: 1.6; text-align: center;">
-              <span>공성대</span>
-              <span>김희주</span>
-            </div>
-          <div style="font-size: 20px; text-align: left;">
-              <span style="font-size: 14px; color: var(--muted); margin-right: 4px;">의 딸</span>
-              <strong style="font-size: 20px;">단희</strong>
-            </div>
-          </div>
-
         </div>
       </div>
     </section>
 
-    <!-- ACCOUNT (마음 전하실 곳) -->
-    <section class="section reveal" id="account">
-      <div class="sec-head">
-        <div class="kicker">For Your Heart</div>
-        <h2 class="h2">마음 전하실 곳</h2>
-      </div>
-      <div class="card info" style="display:flex; flex-direction:column; gap:10px; padding:20px;">
-        <button class="btn" type="button" onclick="openModal('groomModal')" style="width:100%; padding:14px; font-size:15px; justify-content:space-between; background:rgba(0,0,0,.02); border-color:var(--line);">
-          <span>신랑측 계좌번호 확인</span>
-          <span style="color:var(--muted)">›</span>
-        </button>
-        <button class="btn" type="button" onclick="openModal('brideModal')" style="width:100%; padding:14px; font-size:15px; justify-content:space-between; background:rgba(0,0,0,.02); border-color:var(--line);">
-          <span>신부측 계좌번호 확인</span>
-          <span style="color:var(--muted)">›</span>
-        </button>
-      </div>
-    </section>
+    <!-- PAGE 3: GALLERY (비율 최적화 + 썸네일 미리보기) -->
+    <section class="page-section" id="gallery">
+      <div class="card">
+        <div class="sec-head">
+          <h2 class="h2">GALLERY</h2>
+        </div>
 
-    <!-- GALLERY -->
-    <section class="section reveal" id="gallery">
-      <div class="sec-head">
-        <div class="kicker">Gallery</div>
-        <h2 class="h2">사진</h2>
-      </div>
-
-      <div class="card gallery">
         <div class="viewer" id="viewer">
-          <img id="mainImg" src="images/g1.jpg" alt="갤러리 사진" loading="lazy" decoding="async">
+          <img id="mainImg" src="images/g1.jpg" alt="갤러리 사진" loading="lazy">
           <div class="count" id="count">1 / 6</div>
           <div class="navbtn prev" id="prevBtn">‹</div>
           <div class="navbtn next" id="nextBtn">›</div>
         </div>
 
+        <!-- 6개 썸네일 미리보기 -->
         <div class="thumbs" id="thumbs"></div>
       </div>
     </section>
 
-    <!-- LOCATION -->
-    <section class="section reveal" id="location">
-      <div class="sec-head">
-        <div class="kicker">Location</div>
-        <h2 class="h2">오시는 길</h2>
-      </div>
+    <!-- PAGE 4: LOCATION -->
+    <section class="page-section" id="location">
+      <div class="card">
+        <div class="sec-head">
+          <h2 class="h2">오시는 길</h2>
+        </div>
 
-      <div class="card info">
         <a class="map" href="https://map.naver.com/v5/search/파티 더 풀문" target="_blank" rel="noopener">
-          <img src="images/map.png" alt="지도" loading="lazy" decoding="async">
+          <img src="images/map.png" alt="지도" loading="lazy">
           <div class="map-badge">NAVER MAP</div>
         </a>
 
-        <div class="row" style="border-top:none;padding-top:14px">
-          <div class="label">주소</div>
-          <div class="value">
-            <div class="addr-row">
-              <div class="addr-box" id="addrBox">부산 기장군 기장읍 기장해안로 98 디 101호</div>
-              <button class="copy-mini" type="button" id="copyAddrMini">복사</button>
-            </div>
+        <div class="addr-row">
+          <div class="addr-box" id="addrBox">부산 기장군 기장읍 기장해안로 98 디 101호</div>
+          <button class="copy-mini" type="button" id="copyAddrMini">복사</button>
+        </div>
 
-            <div class="nav-grid">
-              <a class="navbtn2" href="https://map.naver.com/v5/search/파티 더 풀문" target="_blank" rel="noopener">
-                <span class="ico naver">N</span><span>네이버</span>
-              </a>
-              <a class="navbtn2" href="https://map.kakao.com/link/search/파티 더 풀문" target="_blank" rel="noopener">
-                <span class="ico kakao">K</span><span>카카오</span>
-              </a>
-              <a class="navbtn2" href="https://tmap.life/search?name=파티 더 풀문" target="_blank" rel="noopener">
-                <span class="ico tmap">T</span><span>티맵</span>
-              </a>
-            </div>
-          </div>
+        <div class="nav-grid">
+          <a class="navbtn2" href="https://map.naver.com/v5/search/파티 더 풀문" target="_blank" rel="noopener">
+            <span class="ico naver">N</span><span>네이버</span>
+          </a>
+          <a class="navbtn2" href="https://map.kakao.com/link/search/파티 더 풀문" target="_blank" rel="noopener">
+            <span class="ico kakao">K</span><span>카카오</span>
+          </a>
+          <a class="navbtn2" href="https://tmap.life/search?name=파티 더 풀문" target="_blank" rel="noopener">
+            <span class="ico tmap">T</span><span>티맵</span>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- RSVP SECTION -->
-    <section class="section reveal" id="rsvp">
-      <div class="sec-head">
-        <div class="kicker">RSVP</div>
-        <h2 class="h2">참석 의사 전달</h2>
-      </div>
-      <div class="card info">
-        <div class="row" style="border-top:none;padding-top:0">
-          <div class="value" style="text-align:center; font-size:14px; color:var(--muted); line-height:1.6;">
-            특별한 날 축하의 마음으로 참석해주시는 모든 분들을 한 분 한 분 더욱 귀하게 모실 수 있도록, 아래 버튼으로 신랑 & 신부에게 꼭 참석여부 전달을 부탁드립니다.
-          </div>
+    <!-- PAGE 5: RSVP -->
+    <section class="page-section" id="rsvp">
+      <div class="card" style="text-align:center;">
+        <div class="sec-head">
+          <h2 class="h2">전세버스 안내</h2>
+          <p class="p" style="margin-top:14px;">
+            먼 길을 와주시는 귀한 분들을 위해<br/>
+            전세버스를 준비하였습니다.<br/>
+            탑승 여부의 확인을 부탁드리겠습니다.
+          </p>
         </div>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px">
-          <button class="btn primary" type="button" onclick="openModal('rsvpFormModal')" style="width:100%; padding:14px; font-size:15px; border-radius:12px;">참석의사 전달하기</button>
+
+        <div style="margin-top: 24px;">
+          <button class="btn" type="button" onclick="openModal('rsvpFormModal')">탑승여부 전달하기</button>
         </div>
+
+        <footer style="margin-top: 36px; font-size: 11px; color: var(--muted); line-height: 1.6;">
+          © Wedding Invitation<br/>
+          소중한 걸음 감사드립니다.
+        </footer>
       </div>
     </section>
 
-    <footer>
-      © Wedding Invitation<br/>
-      <a href="#top">맨 위로</a>
-    </footer>
-
-  </div>
+  </main>
 
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox">
@@ -639,120 +531,34 @@
     </div>
   </div>
 
-  <!-- ACCOUNT MODALS (신랑/신부 계좌 팝업) -->
-  <div class="modal-overlay" id="groomModal" onclick="closeModal(event, 'groomModal')">
+  <!-- RSVP MODAL -->
+  <div class="modal-overlay bottom-sheet" id="rsvpFormModal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>신랑측 계좌번호</h3>
-        <span class="modal-close" onclick="closeModal(null, 'groomModal')">×</span>
-      </div>
-      <div class="modal-body">
-        <div class="account-item">
-          <div class="acc-info">
-            <div class="acc-bank">하나은행 82991056103307</div>
-            <div class="acc-name">예금주: 김병준 (신랑)</div>
-          </div>
-          <button class="copy-mini" onclick="copyToClipboard('82991056103307')">복사</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="brideModal" onclick="closeModal(event, 'brideModal')">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>신부측 계좌번호</h3>
-        <span class="modal-close" onclick="closeModal(null, 'brideModal')">×</span>
-      </div>
-      <div class="modal-body">
-        <div class="account-item">
-          <div class="acc-info">
-            <div class="acc-bank">KB국민은행 667210194692</div>
-            <div class="acc-name">예금주: 공성대 (아버지)</div>
-          </div>
-          <button class="copy-mini" onclick="copyToClipboard('667210194692')">복사</button>
-        </div>
-        <div class="account-item">
-          <div class="acc-info">
-            <div class="acc-bank">농협은행 3020427331151</div>
-            <div class="acc-name">예금주: 김희주 (어머니)</div>
-          </div>
-          <button class="copy-mini" onclick="copyToClipboard('3020427331151')">복사</button>
-        </div>
-        <div class="account-item">
-          <div class="acc-info">
-            <div class="acc-bank">농협은행 3021356565221</div>
-            <div class="acc-name">예금주: 공단희 (신부)</div>
-          </div>
-          <button class="copy-mini" onclick="copyToClipboard('3021356565221')">복사</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- RSVP FORM MODAL -->
-  <div class="modal-overlay bottom-sheet" id="rsvpFormModal" onclick="closeModal(event, 'rsvpFormModal')">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>참석 의사 전달</h3>
-        <span class="modal-close" onclick="closeModal(null, 'rsvpFormModal')">×</span>
+        <h3>전세버스 탑승 여부</h3>
       </div>
       
-      <!-- 구글 앱스 스크립트 연결 주소 적용 -->
       <form id="rsvpForm" class="form-body" action="https://script.google.com/macros/s/AKfycbyi1hHjIyfVx_A0qrhv5NID0_3JSgKh6iBwnsCZNNE9E6KsZcunlaPfGCJa6zTxjFpP/exec" method="POST" onsubmit="submitRSVP(event)">
-        <p class="form-desc">원활한 예식 진행을 위해 참석 정보를<br>미리 알려주시면 감사하겠습니다.</p>
+        <p class="form-desc">먼 길을 와주시는 귀한 분들을 위해 전세버스를 준비하였습니다.<br>탑승 여부의 확인을 부탁드리겠습니다.</p>
 
-        <!-- 참석 여부 -->
-        <div class="radio-group">
-          <label class="radio-btn active">
-            <input type="radio" name="attend" value="가능" checked> 가능
-          </label>
-          <label class="radio-btn">
-            <input type="radio" name="attend" value="불가"> 불가
-          </label>
-        </div>
-
-        <!-- 성함 & 구분 -->
-        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:24px;">
-          <div style="flex:1; margin-right:16px;">
-            <div class="input-label">성함</div>
-            <input type="text" name="name" class="input-text" placeholder="성함을 입력해 주세요." required>
-          </div>
-          <div class="radio-inline">
-            <label><input type="radio" name="side" value="신랑측" checked> 신랑측</label>
-            <label><input type="radio" name="side" value="신부측"> 신부측</label>
+        <div style="margin-bottom: 20px;">
+          <img src="images/bus.png" alt="버스 탑승 위치 지도" style="width: 100%; border-radius: 12px; border: 1px solid var(--line); margin-bottom: 10px;">
+          <div style="background: #fafafa; border: 1px solid var(--line); border-radius: 12px; padding: 12px; font-size: 13px; line-height: 1.5;">
+            <div><strong>버스 탑승 위치 :</strong> 관악역 2번출구 [ 세븐일레븐 안양관악역점 ] 앞</div>
+            <div><strong>버스 탑승 시간 :</strong> 07:00</div>
           </div>
         </div>
 
-        <!-- 연락처 -->
-        <div style="margin-bottom:28px;">
+        <div style="margin-bottom:16px;">
+          <div class="input-label">성함</div>
+          <input type="text" name="name" class="input-text" placeholder="성함을 입력해 주세요." required>
+        </div>
+
+        <div style="margin-bottom:20px;">
           <div class="input-label">연락처</div>
           <input type="tel" name="phone" class="input-text" placeholder="참석자 대표 연락처를 입력해 주세요." required>
         </div>
 
-        <!-- 추가 인원 -->
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:28px;">
-          <div class="input-label" style="margin:0;"><span style="color:red">*</span> 추가인원</div>
-          <div class="counter">
-            <button type="button" onclick="updateGuest(-1)">−</button>
-            <span id="guestCountDisplay">0</span>
-            <button type="button" onclick="updateGuest(1)">+</button>
-            <input type="hidden" id="guestInput" name="extra_guests" value="0">
-          </div>
-        </div>
-
-        <!-- 식사 여부 -->
-        <div class="input-label"><span style="color:red">*</span> 식사여부</div>
-        <div class="radio-group">
-          <label class="radio-btn active">
-            <input type="radio" name="meal" value="식사함" checked> 식사함
-          </label>
-          <label class="radio-btn">
-            <input type="radio" name="meal" value="식사안함"> 식사안함
-          </label>
-        </div>
-
-        <!-- 버스 탑승 여부 -->
         <div class="input-label"><span style="color:red">*</span> 버스 탑승 여부</div>
         <div class="radio-group">
           <label class="radio-btn active">
@@ -763,23 +569,7 @@
           </label>
         </div>
 
-        <!-- 전달 사항 -->
-        <div style="margin-bottom:10px;">
-          <div class="input-label">전달사항</div>
-          <input type="text" name="message" class="input-text" placeholder="전달하실 내용을 입력해 주세요. (최대 30자)" maxlength="30">
-        </div>
-
-        <!-- 개인정보 동의 -->
-        <label class="consent-box">
-          <input type="checkbox" id="consentChk">
-          <div class="consent-text">
-            <strong>동의합니다.</strong>
-            <small>참석여부 전달을 위한 개인정보 수집 및 이용에 동의해주세요.<br>항목: 성함, 연락처, 동행인 성함 · 보유기간: 청첩장 이용 종료시까지</small>
-          </div>
-        </label>
-
-        <!-- 제출 버튼 -->
-        <button type="submit" class="btn primary" style="width:100%; margin-top:20px; padding:16px; font-size:15px; border-radius:12px; background:#f4f4f4; color:#999; border:none; transition:all 0.3s;" id="submitBtn" disabled>신랑 & 신부에 전달하기</button>
+        <button type="submit" class="btn" id="submitBtn">신랑 & 신부에게 전달하기</button>
       </form>
     </div>
   </div>
@@ -787,7 +577,7 @@
   <div class="toast" id="toast">복사되었습니다</div>
 
   <script>
-    // ---------- Toast + Clipboard ----------
+    // 복사 기능
     const toast = document.getElementById('toast');
     let toastTimer = null;
     function showToast(msg){
@@ -813,17 +603,8 @@
     document.getElementById('copyAddrMini')?.addEventListener('click', ()=>{
       copyToClipboard(document.getElementById('addrBox').innerText.trim());
     });
-    document.getElementById('copyLinkBtn')?.addEventListener('click', ()=>{
-      copyToClipboard(window.location.href);
-    });
 
-    // ---------- Scroll reveal ----------
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
-    }, { threshold: 0.12 });
-    document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
-
-    // ---------- Gallery (✅ 초기 1장만 로딩, 나머지는 필요할 때 프리로드) ----------
+    // 갤러리 슬라이더 및 썸네일 연동
     const images = [
       "images/g1.jpg","images/g2.jpg","images/g3.jpg",
       "images/g4.jpg","images/g5.jpg","images/g6.jpg",
@@ -833,88 +614,60 @@
     const count = document.getElementById('count');
     const thumbs = document.getElementById('thumbs');
 
-    function preloadImage(src){
-      const img = new Image();
-      img.decoding = "async";
-      img.loading = "lazy";
-      img.src = src;
-    }
-
     function renderThumbs(){
       thumbs.innerHTML = "";
       images.forEach((src, i)=>{
         const div = document.createElement('div');
         div.className = "thumb" + (i === idx ? " on" : "");
-        div.innerHTML = `<img src="${src}" loading="lazy" decoding="async" alt="thumb ${i+1}">`;
-        div.addEventListener('click', ()=> setIndex(i, true));
+        div.innerHTML = `<img src="${src}" loading="lazy" alt="thumb ${i+1}">`;
+        div.addEventListener('click', ()=> setIndex(i));
         thumbs.appendChild(div);
       });
     }
 
-    function setIndex(i, manual=false){
+    function setIndex(i){
       idx = (i + images.length) % images.length;
       mainImg.src = images[idx];
       count.textContent = `${idx+1} / ${images.length}`;
       renderThumbs();
-
-      // 다음/이전 한 장씩만 프리로드 (네트워크 과부하 방지)
-      preloadImage(images[(idx+1) % images.length]);
-      preloadImage(images[(idx-1 + images.length) % images.length]);
-
-      if(manual) resetAuto();
     }
 
-    document.getElementById('prevBtn').addEventListener('click', ()=> setIndex(idx - 1, true));
-    document.getElementById('nextBtn').addEventListener('click', ()=> setIndex(idx + 1, true));
+    document.getElementById('prevBtn').addEventListener('click', ()=> setIndex(idx - 1));
+    document.getElementById('nextBtn').addEventListener('click', ()=> setIndex(idx + 1));
 
-    // Swipe
+    // 터치 좌우 스와이프
     let startX = null;
     const viewer = document.getElementById('viewer');
     viewer.addEventListener('touchstart', (e)=>{ startX = e.touches[0].clientX; }, {passive:true});
     viewer.addEventListener('touchend', (e)=>{
       if(startX === null) return;
-      const endX = e.changedTouches[0].clientX;
-      const diff = endX - startX;
+      const diff = e.changedTouches[0].clientX - startX;
       if(Math.abs(diff) > 40){
-        diff > 0 ? setIndex(idx - 1, true) : setIndex(idx + 1, true);
+        diff > 0 ? setIndex(idx - 1) : setIndex(idx + 1);
       }
       startX = null;
     });
 
-    // Auto slide
-    let autoTimer = null;
-    function startAuto(){ autoTimer = setInterval(()=> setIndex(idx + 1), 3500); }
-    function stopAuto(){ if(autoTimer) clearInterval(autoTimer); autoTimer = null; }
-    function resetAuto(){ stopAuto(); startAuto(); }
-
-    // Lightbox
+    // 라이트박스 (클릭 시 확대)
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
-    function openLightbox(){ lbImg.src = images[idx]; lightbox.classList.add('on'); stopAuto(); }
-    function closeLightbox(){ lightbox.classList.remove('on'); lbImg.src = ""; startAuto(); }
-    mainImg.addEventListener('click', openLightbox);
-    document.getElementById('lbClose').addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+    mainImg.addEventListener('click', () => { lbImg.src = images[idx]; lightbox.classList.add('on'); });
+    document.getElementById('lbClose').addEventListener('click', () => { lightbox.classList.remove('on'); });
+    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) lightbox.classList.remove('on'); });
 
-    // Init gallery
     setIndex(0);
-    startAuto();
 
-    // ---------- ✅ 폰트 로드 후 타이핑 시작 (둘 다 적용) ----------
+    // 타이핑 애니메이션
     (async ()=>{
       try{
         await document.fonts.load("1em WeddingFont");
         await document.fonts.ready;
       }catch(e){}
-
       const t = document.querySelector(".wm .type");
-      if(t){
-        // 느린 타이핑
-        t.style.animation = "typing 4.8s steps(45,end) forwards";
-      }
+      if(t) t.style.animation = "typing 4.8s steps(45,end) forwards";
     })();
 
-    // ---------- Music & 자동 팝업 ----------
+    // 배경음악
     const bgm = document.getElementById('bgm');
     const musicBtn = document.getElementById('musicBtn');
     const musicTip = document.getElementById('musicTip');
@@ -923,7 +676,6 @@
     function setMusicUI(on){
       musicOn = on;
       musicBtn.textContent = on ? "❚❚" : "♫";
-      musicBtn.setAttribute("aria-label", on ? "배경음악 정지" : "배경음악 재생");
     }
 
     async function tryPlay(){
@@ -931,29 +683,46 @@
         bgm.volume = 0.9;
         await bgm.play();
         setMusicUI(true);
-        musicTip.classList.remove('on'); // 재생 성공 시 팁 숨김
+        musicTip.classList.remove('on');
       }catch(err){
-        // 브라우저 정책에 의해 자동재생이 차단된 경우 팁 표시
         musicTip.classList.add('on');
         setMusicUI(false);
       }
     }
 
-    function pause(){
-      bgm.pause();
-      setMusicUI(false);
-    }
-
-    musicBtn.addEventListener('click', async ()=>{
-      if(musicOn) pause();
-      else await tryPlay();
+    musicBtn.addEventListener('click', ()=>{
+      if(musicOn) { bgm.pause(); setMusicUI(false); }
+      else tryPlay();
     });
 
-    // 페이지 로드 시 음악 시도 및 팝업 띄우기
+    const triggerPlay = () => {
+      if(!musicOn) tryPlay();
+      document.removeEventListener('touchstart', triggerPlay);
+      document.removeEventListener('click', triggerPlay);
+    };
+    document.addEventListener('touchstart', triggerPlay, {passive:true});
+    document.addEventListener('click', triggerPlay);
+
+    // 모달 제어
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      modal.style.display = 'flex';
+      void modal.offsetWidth;
+      modal.classList.add('on');
+      document.getElementById('snapContainer').style.overflowY = 'hidden';
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      modal.classList.remove('on');
+      document.getElementById('snapContainer').style.overflowY = 'scroll';
+      setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
+
+    // 접속 1.5초 후 자동 팝업
     window.addEventListener('DOMContentLoaded', () => {
       tryPlay();
 
-      // 처음 접속 시 참석 의사 팝업 강제 노출 (1.5초 뒤)
       if (!sessionStorage.getItem('rsvpPopped')) {
         setTimeout(() => {
           openModal('rsvpFormModal');
@@ -962,40 +731,9 @@
       }
     });
 
-    const firstInteraction = async ()=>{
-      if(!musicOn) {
-        await tryPlay();
-      }
-      document.removeEventListener('touchstart', firstInteraction);
-      document.removeEventListener('click', firstInteraction);
-    };
-    
-    document.addEventListener('touchstart', firstInteraction, {passive:true});
-    document.addEventListener('click', firstInteraction);
-
-    // ---------- Modal Logic ----------
-    function openModal(id) {
-      const modal = document.getElementById(id);
-      modal.style.display = 'flex';
-      // 브라우저 렌더링 강제 업데이트 (부드러운 애니메이션을 위해)
-      void modal.offsetWidth;
-      modal.classList.add('on');
-      document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
-    }
-
-    function closeModal(e, id) {
-      // 바깥 검은 배경 클릭 시 또는 닫기 버튼 클릭 시에만 닫힘
-      if (e && e.target !== e.currentTarget) return; 
-      const modal = document.getElementById(id);
-      modal.classList.remove('on');
-      document.body.style.overflow = ''; // 배경 스크롤 방지 해제
-      setTimeout(() => { modal.style.display = 'none'; }, 300);
-    }
-
-    // RSVP Form Scripts (라디오 버튼 시각 효과)
+    // 라디오 버튼 선택
     document.querySelectorAll('.radio-btn input[type="radio"]').forEach(radio => {
       radio.addEventListener('change', function() {
-        // 같은 이름을 가진 다른 라디오 버튼들의 active 클래스 제거
         document.querySelectorAll(`.radio-btn input[name="${this.name}"]`).forEach(r => {
           r.parentElement.classList.remove('active');
         });
@@ -1003,67 +741,27 @@
       });
     });
 
-    // 인원수 카운터
-    let guestCount = 0;
-    function updateGuest(val) {
-      guestCount += val;
-      if(guestCount < 0) guestCount = 0;
-      document.getElementById('guestCountDisplay').innerText = guestCount;
-      document.getElementById('guestInput').value = guestCount;
-    }
-
-    // 약관 동의 시 버튼 활성화
-    const consentChk = document.getElementById('consentChk');
-    const submitBtn = document.getElementById('submitBtn');
-    consentChk.addEventListener('change', function() {
-      if(this.checked) {
-        submitBtn.disabled = false;
-        submitBtn.style.background = '#111';
-        submitBtn.style.color = '#fff';
-      } else {
-        submitBtn.disabled = true;
-        submitBtn.style.background = '#f4f4f4';
-        submitBtn.style.color = '#999';
-      }
-    });
-
-    // 폼 제출 (구글 시트 연동 전용 옵션 포함)
+    // RSVP 전송
     async function submitRSVP(e) {
-      e.preventDefault(); 
+      e.preventDefault();
       const form = e.target;
-      const data = new FormData(form);
       const btn = document.getElementById('submitBtn');
       const originalText = btn.innerText;
-      
       btn.innerText = '전송 중...';
       btn.disabled = true;
 
       try {
-        await fetch(form.action, {
-          method: 'POST',
-          mode: 'no-cors', // 구글 스크립트 제출 필수 옵션
-          body: data
-        });
-
+        await fetch(form.action, { method: 'POST', mode: 'no-cors', body: new FormData(form) });
         alert("참석 의사가 성공적으로 전달되었습니다. 감사합니다!");
-        closeModal(null, 'rsvpFormModal');
-        
-        // 제출 후 폼 초기화 설정
+        closeModal('rsvpFormModal');
         form.reset();
-        guestCount = 0;
-        updateGuest(0);
-        
         document.querySelectorAll('.radio-btn').forEach(lbl => lbl.classList.remove('active'));
-        form.querySelector('input[name="attend"][value="가능"]').parentElement.classList.add('active');
-        form.querySelector('input[name="meal"][value="식사함"]').parentElement.classList.add('active');
         form.querySelector('input[name="bus"][value="탑승함"]').parentElement.classList.add('active');
-        
-        consentChk.checked = false;
-        consentChk.dispatchEvent(new Event('change'));
       } catch(err) {
         alert("오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
       } finally {
         btn.innerText = originalText;
+        btn.disabled = false;
       }
     }
   </script>
