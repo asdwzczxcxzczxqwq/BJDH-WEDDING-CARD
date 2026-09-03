@@ -201,6 +201,7 @@
       color:#fff;
       display:flex;align-items:center;justify-content:center;
       cursor:pointer;
+      flex-shrink: 0;
     }
     .music-tip{
       max-width:200px;
@@ -211,8 +212,16 @@
       font-size:12px;
       backdrop-filter: blur(8px);
       display:none;
+      white-space: nowrap;
     }
-    .music-tip.on{display:block}
+    .music-tip.on{
+      display:block;
+      animation: tipPulse 2s infinite ease-in-out;
+    }
+    @keyframes tipPulse {
+      0%, 100% { transform: translateX(0); opacity: 1; }
+      50% { transform: translateX(-4px); opacity: 0.8; }
+    }
 
     /* ===== GALLERY ===== */
     .viewer{
@@ -395,7 +404,7 @@
 
   <!-- BGM Control -->
   <div class="music">
-    <div class="music-tip" id="musicTip">터치하면 음악이 재생돼요.</div>
+    <div class="music-tip on" id="musicTip">배경음악과 함께 감상해 보세요 🎵</div>
     <button class="music-btn" id="musicBtn" aria-label="배경음악 재생/정지">♫</button>
   </div>
   <audio id="bgm" src="audio/couple.mp3" preload="auto" loop></audio>
@@ -748,8 +757,7 @@
           window.removeEventListener('touchstart', handleFirstScreenTouch);
           window.removeEventListener('click', handleFirstScreenTouch);
         }).catch(() => {
-          // 자동재생 차단 시 팁 표시
-          musicTip.classList.add('on');
+          // 자동재생 차단 시 팁 표시 유지 (HTML 기본값)
         });
       }
 
