@@ -404,10 +404,10 @@
 
   <!-- BGM Control -->
   <div class="music">
-    <div class="music-tip on" id="musicTip">배경음악과 함께 감상해 보세요 🎵</div>
+    <div class="music-tip on" id="musicTip">화면을 터치하면 음악이 재생돼요 🎵</div>
     <button class="music-btn" id="musicBtn" aria-label="배경음악 재생/정지">♫</button>
   </div>
-  <audio id="bgm" src="audio/COUPLE.mp3" preload="auto" loop></audio>
+  <audio id="bgm" src="audio/couple.mp3" preload="auto" loop></audio>
 
   <!-- 풀스크롤 컨테이너 -->
   <main class="snap-container" id="snapContainer">
@@ -715,7 +715,7 @@
 
     // 우측 상단 전용 토글 버튼
     musicBtn.addEventListener('click', (e)=>{
-      e.stopPropagation(); // 배경 클릭으로 인식되지 않도록 차단
+      e.stopPropagation(); // 배경 터치 이벤트가 중복 실행되지 않도록 차단
       if(musicOn) {
         bgm.pause();
         setMusicUI(false);
@@ -727,40 +727,30 @@
       }
     });
 
-    // 화면 어디든 최초 1회 터치/클릭 시 재생 시작 (동기적 실행 강제)
-    const handleFirstScreenTouch = () => {
+    // 화면 터치/클릭 시 재생 (브라우저 차단 우회, 동기적 실행)
+    const playOnInteraction = () => {
       if(!musicOn) {
         const playPromise = bgm.play();
         if (playPromise !== undefined) {
           playPromise.then(() => {
             setMusicUI(true);
-            // 재생 성공 시 화면 전체 터치 리스너 해제 (이후는 상단 버튼으로만 제어)
-            window.removeEventListener('touchstart', handleFirstScreenTouch);
-            window.removeEventListener('click', handleFirstScreenTouch);
-          }).catch(() => {
-            // 차단된 경우 유지
+            // 성공하면 더 이상 이벤트 발생 안 하도록 리스너 완전히 제거
+            document.removeEventListener('click', playOnInteraction);
+            document.removeEventListener('touchstart', playOnInteraction);
+            document.removeEventListener('pointerdown', playOnInteraction);
+          }).catch((err) => {
+            console.log('재생 차단됨:', err);
           });
         }
       }
     };
 
-    window.addEventListener('touchstart', handleFirstScreenTouch, { passive: true });
-    window.addEventListener('click', handleFirstScreenTouch);
+    // 사용자 상호작용 이벤트 바인딩 (이 이벤트들이 발생할 때만 브라우저가 오디오 재생을 허락함)
+    document.addEventListener('click', playOnInteraction);
+    document.addEventListener('touchstart', playOnInteraction, { passive: true });
+    document.addEventListener('pointerdown', playOnInteraction, { passive: true });
 
-    // 자동재생 허용 브라우저를 위해 로드 시 시도
     window.addEventListener('DOMContentLoaded', () => {
-      const playPromise = bgm.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setMusicUI(true);
-          // 자동재생 성공 시 화면 터치 리스너 즉시 제거
-          window.removeEventListener('touchstart', handleFirstScreenTouch);
-          window.removeEventListener('click', handleFirstScreenTouch);
-        }).catch(() => {
-          // 자동재생 차단 시 팁 표시 유지 (HTML 기본값)
-        });
-      }
-
       // 1.5초 후 RSVP 자동 팝업
       if (!sessionStorage.getItem('rsvpPopped')) {
         setTimeout(() => {
