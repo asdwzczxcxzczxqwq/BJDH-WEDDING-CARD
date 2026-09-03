@@ -182,37 +182,37 @@
       50%{transform:rotate(45deg) translateY(6px)}
     }
 
-    /* Music UI */
+    /* ===== Music UI (텍스트 형태 플로팅 버튼) ===== */
     .music{
       position:fixed;
       top:16px;
       right:16px;
       z-index:9990;
-      display:flex;
-      align-items:center;
-      gap:10px;
     }
     .music-btn{
-      width:42px;height:42px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.28);
-      background:rgba(0,0,0,.35);
+      height:36px;
+      padding: 0 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.32);
+      background:rgba(0,0,0,.45);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       color:#fff;
-      display:flex;align-items:center;justify-content:center;
+      font-size:12.5px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 6px;
       cursor:pointer;
+      user-select:none;
+      box-shadow: 0 4px 14px rgba(0,0,0,.15);
+      font-family: inherit;
     }
-    .music-tip{
-      max-width:200px;
-      padding:8px 12px;
-      border-radius:12px;
-      background:rgba(0,0,0,.6);
-      color:#fff;
-      font-size:12px;
-      backdrop-filter: blur(8px);
-      display:none;
+    .music-btn:active{
+      transform: scale(0.96);
     }
-    .music-tip.on{display:block}
 
     /* ===== GALLERY ===== */
     .viewer{
@@ -352,7 +352,6 @@
     }
     .modal-overlay.bottom-sheet .modal-header h3 {margin:0;font-size:16px;font-weight:700}
     
-    /* RSVP 모달 닫기(X) 버튼 */
     .modal-close-btn {
       position: absolute;
       right: 14px;
@@ -394,12 +393,11 @@
 
 <body>
 
-  <!-- BGM Control -->
+  <!-- BGM UI (재생 / 일시정지 버튼) -->
   <div class="music">
-    <div class="music-tip" id="musicTip">음악 재생은 터치가 필요해요.</div>
-    <button class="music-btn" id="musicBtn" aria-label="배경음악 재생/정지">♫</button>
+    <button class="music-btn" id="musicBtn" aria-label="배경음악 제어">시작</button>
   </div>
-  <audio id="bgm" src="audio/couple.mp3" preload="auto" loop></audio>
+  <audio id="bgm" src="audio/couple.mp3" preload="auto" loop playsinline></audio>
 
   <!-- 풀스크롤 컨테이너 -->
   <main class="snap-container" id="snapContainer">
@@ -487,7 +485,6 @@
           <div class="navbtn next" id="nextBtn">›</div>
         </div>
 
-        <!-- 6개 썸네일 미리보기 -->
         <div class="thumbs" id="thumbs"></div>
       </div>
     </section>
@@ -556,7 +553,7 @@
     </div>
   </div>
 
-  <!-- RSVP MODAL (닫기 X 버튼 추가 완료) -->
+  <!-- RSVP MODAL -->
   <div class="modal-overlay bottom-sheet" id="rsvpFormModal">
     <div class="modal-content">
       <div class="modal-header">
@@ -630,7 +627,7 @@
       copyToClipboard(document.getElementById('addrBox').innerText.trim());
     });
 
-    // 갤러리 슬라이더 및 썸네일 연동
+    // 갤러리 슬라이더
     const images = [
       "images/g1.jpg","images/g2.jpg","images/g3.jpg",
       "images/g4.jpg","images/g5.jpg","images/g6.jpg",
@@ -674,7 +671,7 @@
       startX = null;
     });
 
-    // 라이트박스 (클릭 시 확대)
+    // 라이트박스
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
     mainImg.addEventListener('click', () => { lbImg.src = images[idx]; lightbox.classList.add('on'); });
@@ -693,41 +690,54 @@
       if(t) t.style.animation = "typing 4.8s steps(45,end) forwards";
     })();
 
-    // 배경음악
+    // ===== 배경음악 (자연스러운 자동재생 시도 + 시작/일시정지 토글) =====
     const bgm = document.getElementById('bgm');
     const musicBtn = document.getElementById('musicBtn');
-    const musicTip = document.getElementById('musicTip');
-    let musicOn = false;
+    let isPlaying = false;
 
-    function setMusicUI(on){
-      musicOn = on;
-      musicBtn.textContent = on ? "❚❚" : "♫";
+    function updateMusicBtn(playing){
+      isPlaying = playing;
+      musicBtn.innerHTML = playing ? "❚❚ 일시정지" : "▶ 시작";
     }
 
-    async function tryPlay(){
-      try{
-        bgm.volume = 0.9;
+    async function playAudio(){
+      try {
         await bgm.play();
-        setMusicUI(true);
-        musicTip.classList.remove('on');
-      }catch(err){
-        musicTip.classList.add('on');
-        setMusicUI(false);
+        updateMusicBtn(true);
+      } catch(err) {
+        updateMusicBtn(false);
       }
     }
 
-    musicBtn.addEventListener('click', ()=>{
-      if(musicOn) { bgm.pause(); setMusicUI(false); }
-      else tryPlay();
+    function pauseAudio(){
+      bgm.pause();
+      updateMusicBtn(false);
+    }
+
+    // 버튼 수동 클릭 시
+    musicBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if(isPlaying) {
+        pauseAudio();
+      } else {
+        playAudio();
+      }
     });
 
-    const triggerPlay = () => {
-      if(!musicOn) tryPlay();
-      document.removeEventListener('touchstart', triggerPlay);
-      document.removeEventListener('click', triggerPlay);
+    // 화면 첫 터치/스크롤 시 자동 재생 (모바일 정책 통과 핵심)
+    const handleFirstTouch = async () => {
+      if(!isPlaying) {
+        await playAudio();
+      }
+      ['touchstart', 'touchend', 'click', 'scroll'].forEach(evt => {
+        window.removeEventListener(evt, handleFirstTouch, { capture: true });
+        document.removeEventListener(evt, handleFirstTouch, { capture: true });
+      });
     };
-    document.addEventListener('touchstart', triggerPlay, {passive:true});
-    document.addEventListener('click', triggerPlay);
+
+    ['touchstart', 'touchend', 'click'].forEach(evt => {
+      window.addEventListener(evt, handleFirstTouch, { capture: true, passive: true });
+    });
 
     // 모달 제어
     function openModal(id) {
@@ -747,7 +757,8 @@
 
     // 접속 1.5초 후 자동 팝업
     window.addEventListener('DOMContentLoaded', () => {
-      tryPlay();
+      // 페이지 로드 시 백그라운드에서 가능한 환경(PC 등)이면 우선 재생 시도
+      playAudio();
 
       if (!sessionStorage.getItem('rsvpPopped')) {
         setTimeout(() => {
