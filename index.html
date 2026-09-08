@@ -223,6 +223,42 @@
       50% { transform: translateX(-4px); opacity: 0.8; }
     }
 
+    /* ===== CALENDAR (NEW) ===== */
+    .cal-wrap { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); text-align: center; }
+    .cal-month { font-family: "Nanum Myeongjo", serif; font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: 0.1em; margin-bottom: 20px; }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px 0; font-size: 14px; color: var(--ink); }
+    .cal-day { font-size: 11px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+    .cal-sun { color: #d65555; }
+    .cal-cell { display: flex; align-items: center; justify-content: center; height: 30px; }
+    .d-day { position: relative; font-weight: 600; color: var(--ink); display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; }
+    .d-day-circle {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 42px; height: 42px;
+      fill: none;
+      stroke: #eb4d4b; /* 빨간 색연필 색상 */
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0.85;
+      /* 스르륵 그려지는 애니메이션 */
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+      animation: drawCircle 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      animation-delay: 0.5s;
+    }
+    @keyframes drawCircle {
+      to { stroke-dashoffset: 0; }
+    }
+    .cal-datetime {
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--ink);
+      font-family: "Nanum Myeongjo", serif;
+      letter-spacing: 0.05em;
+    }
+
     /* ===== GALLERY ===== */
     .viewer{
       position:relative;
@@ -478,6 +514,75 @@
 
           </div>
         </div>
+
+        <!-- 감성 달력 영역 추가 -->
+        <div class="cal-wrap">
+          <div class="cal-month">2026. 11</div>
+          <div class="cal-grid">
+            <!-- 요일 헤더 -->
+            <div class="cal-cell cal-day cal-sun">S</div>
+            <div class="cal-cell cal-day">M</div>
+            <div class="cal-cell cal-day">T</div>
+            <div class="cal-cell cal-day">W</div>
+            <div class="cal-cell cal-day">T</div>
+            <div class="cal-cell cal-day">F</div>
+            <div class="cal-cell cal-day">S</div>
+            
+            <!-- 1주차 -->
+            <div class="cal-cell cal-sun">1</div>
+            <div class="cal-cell">2</div>
+            <div class="cal-cell">3</div>
+            <div class="cal-cell">4</div>
+            <div class="cal-cell">5</div>
+            <div class="cal-cell">6</div>
+            <div class="cal-cell">
+              <span class="d-day">
+                7
+                <!-- 색연필 느낌의 동그라미 SVG -->
+                <svg class="d-day-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                  <path d="M 50 15 C 20 15, 10 40, 15 65 C 20 90, 75 95, 85 70 C 95 45, 80 10, 50 10 C 35 10, 25 20, 20 30" />
+                </svg>
+              </span>
+            </div>
+            
+            <!-- 2주차 -->
+            <div class="cal-cell cal-sun">8</div>
+            <div class="cal-cell">9</div>
+            <div class="cal-cell">10</div>
+            <div class="cal-cell">11</div>
+            <div class="cal-cell">12</div>
+            <div class="cal-cell">13</div>
+            <div class="cal-cell">14</div>
+
+            <!-- 3주차 -->
+            <div class="cal-cell cal-sun">15</div>
+            <div class="cal-cell">16</div>
+            <div class="cal-cell">17</div>
+            <div class="cal-cell">18</div>
+            <div class="cal-cell">19</div>
+            <div class="cal-cell">20</div>
+            <div class="cal-cell">21</div>
+
+            <!-- 4주차 -->
+            <div class="cal-cell cal-sun">22</div>
+            <div class="cal-cell">23</div>
+            <div class="cal-cell">24</div>
+            <div class="cal-cell">25</div>
+            <div class="cal-cell">26</div>
+            <div class="cal-cell">27</div>
+            <div class="cal-cell">28</div>
+
+            <!-- 5주차 -->
+            <div class="cal-cell cal-sun">29</div>
+            <div class="cal-cell">30</div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+            <div class="cal-cell"></div>
+          </div>
+          <div class="cal-datetime">2026년 11월 7일 토요일 오후 2시</div>
+        </div>
       </div>
     </section>
 
@@ -513,7 +618,7 @@
         </a>
 
         <div class="addr-row">
-          <div class="addr-box" id="addrBox">부산 기장군 기장읍 기장해안로 98 디 101호</div>
+          <div class="addr-box" id="addrBox">부산 기장군 기장해안로 98 디 101호</div>
           <button class="copy-mini" type="button" id="copyAddrMini">복사</button>
         </div>
 
